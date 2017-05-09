@@ -49,6 +49,11 @@ $ hexo -version
 ```
 ![image](/images/Hexo_blog教程素材/hexo/2_版本检测.jpg)  
 - [x] 出现上图所示,恭喜你!安装成功了....  
+
+---
+
+## 配置博客
+
 - **hexo初始化**
 ```
 //我们在刚开始建好的博客文件夹下执行(我这里使用的是e:\my_blog)
@@ -77,9 +82,6 @@ $ hexo s
 使用浏览器打开[localhost:4000](http://localhost:4000)，可以看到如下的博客首页界面  
 ![image](/images/Hexo_blog教程素材/hexo/6_index.jpg)
 
----
-
-## 配置博客
 对于博客的配置，我们需要用到_config.yml文件，下面是该文件的默认参数信息：
 ```
 # Hexo Configuration
@@ -158,34 +160,42 @@ deploy:
 
 ```
 
+## 博客发布
+我们可以把博客发布到github，这样别人就可以看到我们写的博客了，下面我们就一起来发布吧!  
+**重要**:*首先你要有个gitHub账号,如果没有,请[点这里](https://github.com/)注册，具体的注册过程就不在这里描述。*  
+- 配置仓库  
+![image](/images/Hexo_blog教程素材/git/1_index.jpg)
+登录账号后，在Github页面的右上方选择New repository进行仓库的创建。
+![image](/images/Hexo_blog教程素材/git/2_create.jpg)  
+在仓库名字输入框中输入：
+```
+xxx.github.io//xxx表示你的昵称
 
+```
+然后点击==Create repository==来完成创建  
 
+- 配置_config.yml  
+我们在博客目录中找到_config.yml配置文件，然后找到Deployment的配置
+```
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git //type类型为git
+  repo: https://github.com/leungandi/xxx.github.io.git //这里填写你刚刚创建的仓库地址
+  branch: master //这里填写master分支
 
+```
 
+- 发布运行  
+到此为止,我们可以使用hexo指令来上传博客到gitHub
 
+```
+$ hexo -g //生成静态文件
 
+$ hexo -d //部署完整(就是发布到我们gitHub仓库)
+    
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+等待上传完成,我们就可以使用gitHub的域名来访问我们的博客了!!!
 
 
