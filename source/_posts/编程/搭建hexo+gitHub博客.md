@@ -47,7 +47,7 @@ $ npm install -g hexo-cli
 $ hexo -version
 
 ```
-![image](E:\myBlog\source\image\Hexo_blog教程素材\hexo\2_版本检测.jpg)  
+![image](/images/Hexo_blog教程素材/hexo/2_版本检测.jpg)  
 - [x] 出现上图所示,恭喜你!安装成功了....  
 - **hexo初始化**
 ```
@@ -64,7 +64,7 @@ $ npm install
 ```
 
 初始化完成后,目录如下：  
-![image](E:\myBlog\source\image\Hexo_blog教程素材\hexo\4_目录.jpg)  
+![image](/images/Hexo_blog教程素材/hexo/4_目录.jpg)  
 
 到这里我们已经开始运行博客了,是不是已经有点迫不及待了,让我们先看以下运行效果  
 

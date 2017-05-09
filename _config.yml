@@ -11,8 +11,8 @@ language: zh-Hans
 timezone: Asia/Chongqing
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://leungandi.github.io/szl.github.io
-root: /szl.github.io
+url: http://www.ddyc.vip
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
