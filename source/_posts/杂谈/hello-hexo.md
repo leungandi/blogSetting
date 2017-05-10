@@ -1,22 +1,27 @@
 ---
-title: hello hexo
+title: Hello Hexo
 date: 2017-05-02 14:26:04
 tags:
+categories: 杂谈
 ---
-### 第一次使用hexo+github搭建博客
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=355992&auto=1&height=66"></iframe>
 
-#### 博客简介
+### 博客简介  
 
-用来记录技术文章和分享生活,快乐生活,快乐工作
+嘿,这是我的博客,使用hexo+gitHub搭建的!
+  
+之前没有总结的习惯,用到很多知识点的时候发现记不住了,只得求救于度娘,如此循环,在搜索上浪费了很多时间,后来
+使用书签和云笔记的来记录,这情况才得以改善一二. 
+ 
+看别人写的博客,甚是羡慕,不仅总结能力强,而且文笔还非常的不错,so,博主只是想记录一下知识点和分享一下生活趣
+事,另外锻炼一下的表达和写作能力,权当一个日记本来用了..  
 
-#### 这是代码
-```
-public static void main(String[] args){
-	System.out.print("hello hexo");
-}
-```
+**只要开始,就不晚!** 一起加油吧！！！
+  
+### 约法三章
+- 如果文章是转载的,博主会在标题注明[转载]且在文末配上原文链接;
+- 如果您想转载本博客文章,无须申请授权,注明出处即可;
+- 
 
---- 
-*测试结束*
 
 
