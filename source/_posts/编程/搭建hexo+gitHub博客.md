@@ -34,7 +34,7 @@ Hexo是搭建博客的核心,[点击进入hexo首页](https://hexo.io/)
 
 ![image](F:\blog教程素材\hexo\index.jpg)  
 - **首先创建博客本地的路径**  
-![image](E:\blog教程素材\hexo\1_新建文件目录.jpg)  
+![image](/images/Hexo_blog/hexo/1_newdir.jpg)  
 比如：我这里使用的是e:\my_blog文件夹  
 - **下载安装hexo**  
 ```
@@ -47,7 +47,7 @@ $ npm install -g hexo-cli
 $ hexo -version
 
 ```
-![image](/images/Hexo_blog教程素材/hexo/2_版本检测.jpg)  
+![image](/images/Hexo_blog/hexo/2_version.jpg)  
 - [x] 出现上图所示,恭喜你!安装成功了....  
 
 ---
@@ -69,7 +69,7 @@ $ npm install
 ```
 
 初始化完成后,目录如下：  
-![image](/images/Hexo_blog教程素材/hexo/4_目录.jpg)  
+![image](/images/Hexo_blog/hexo/4_dir.jpg)  
 
 到这里我们已经开始运行博客了,是不是已经有点迫不及待了,让我们先看以下运行效果  
 
@@ -78,9 +78,9 @@ $ npm install
 $ hexo s
 
 ```
-![image](E:\myBlog\source\image\Hexo_blog教程素材\hexo\5_server.jpg)  
+![image](E:\myBlog\source\image\Hexo_blog\hexo\5_server.jpg)  
 使用浏览器打开[localhost:4000](http://localhost:4000)，可以看到如下的博客首页界面  
-![image](/images/Hexo_blog教程素材/hexo/6_index.jpg)
+![image](/images/Hexo_blog/hexo/6_index.jpg)
 
 对于博客的配置，我们需要用到_config.yml文件，下面是该文件的默认参数信息：
 ```
@@ -164,9 +164,9 @@ deploy:
 我们可以把博客发布到github，这样别人就可以看到我们写的博客了，下面我们就一起来发布吧!  
 **重要**:*首先你要有个gitHub账号,如果没有,请[点这里](https://github.com/)注册，具体的注册过程就不在这里描述。*  
 - 配置仓库  
-![image](/images/Hexo_blog教程素材/git/1_index.jpg)
+![image](/images/Hexo_blog/git/1_index.jpg)
 登录账号后，在Github页面的右上方选择New repository进行仓库的创建。
-![image](/images/Hexo_blog教程素材/git/2_create.jpg)  
+![image](/images/Hexo_blog/git/2_create.jpg)  
 在仓库名字输入框中输入：
 ```
 xxx.github.io//xxx表示你的昵称
