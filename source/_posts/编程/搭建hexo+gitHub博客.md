@@ -5,9 +5,6 @@ tags:
 categories: 编程
 ---
 
-
-# 搭建hexo+gitHub博客
----
 ## 准备环境
 ### 安装node.js
 点击进入[node.js官网](https://nodejs.org/en/download/)  
@@ -18,7 +15,7 @@ categories: 编程
 
  **安装完成，让我们来检测一下node.js是否安装成功吧**   
 ![image](F:\blog教程素材\nodejs\nodejs_version.jpg)  
-- [x] 出现上图所示,恭喜你!安装成功了....  
+出现上图所示,恭喜你!安装成功了....  
 
 ---
 
@@ -48,13 +45,13 @@ $ hexo -version
 
 ```
 ![image](/images/Hexo_blog/hexo/2_version.jpg)  
-- [x] 出现上图所示,恭喜你!安装成功了....  
+出现上图所示,恭喜你!安装成功了....  
 
 ---
 
 ## 配置博客
 
-- **hexo初始化**
+### hexo初始化  
 ```
 //我们在刚开始建好的博客文件夹下执行(我这里使用的是e:\my_blog)
 $ hexo init
@@ -69,7 +66,9 @@ $ npm install
 ```
 
 初始化完成后,目录如下：  
-![image](/images/Hexo_blog/hexo/4_dir.jpg)  
+![image](/images/Hexo_blog/hexo/4_dir.jpg) 
+
+### hexo本地发布  
 
 到这里我们已经开始运行博客了,是不是已经有点迫不及待了,让我们先看以下运行效果  
 
@@ -174,7 +173,7 @@ xxx.github.io//xxx表示你的昵称
 ```
 然后点击==Create repository==来完成创建  
 
-- 配置_config.yml  
+### 配置_config.yml  
 我们在博客目录中找到_config.yml配置文件，然后找到Deployment的配置
 ```
 # Deployment
@@ -186,7 +185,7 @@ deploy:
 
 ```
 
-- 发布运行  
+### 发布运行  
 到此为止,我们可以使用hexo指令来上传博客到gitHub
 
 ```
