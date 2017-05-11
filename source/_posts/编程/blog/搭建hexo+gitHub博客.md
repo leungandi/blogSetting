@@ -77,7 +77,7 @@ $ npm install
 $ hexo s
 
 ```
-![image](E:\myBlog\source\image\Hexo_blog\hexo\5_server.jpg)  
+![image](/images/Hexo_blog/hexo/5_server.jpg)  
 使用浏览器打开[localhost:4000](http://localhost:4000)，可以看到如下的博客首页界面  
 ![image](/images/Hexo_blog/hexo/6_index.jpg)
 
