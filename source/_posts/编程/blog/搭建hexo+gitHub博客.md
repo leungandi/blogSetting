@@ -8,20 +8,20 @@ categories: 编程
 ## 准备环境
 ### 安装node.js
 点击进入[node.js官网](https://nodejs.org/en/download/)  
-![image](F:\blog教程素材\nodejs\nodejs官网下载.jpg)  
+![image](/images/Hexo_blog/nodejs/nodejs官网下载.jpg)  
 下载完成后，双击打开  
-![image](F:\blog教程素材\nodejs\nodejs安装.jpg)  
+![image](/images/Hexo_blog/nodejs/nodejs安装.jpg)  
 一路next,安装完成。  
 
  **安装完成，让我们来检测一下node.js是否安装成功吧**   
-![image](F:\blog教程素材\nodejs\nodejs_version.jpg)  
+![image](/images/Hexo_blog/nodejs/nodejs_version.jpg)  
 出现上图所示,恭喜你!安装成功了....  
 
 ---
 
 ### 安装git 
 git使用一般有两种方式，一种是图形化界面（GUI），另一种是通过命令行，我们这里要使用的是后者，[点击这里](https://git-scm.com/downloads)进入git的下载网站下载git的安装包  
-![image](F:\blog教程素材\git\index.jpg)
+![image](/images/Hexo_blog/git/index.jpg)
 
 --- 
 
@@ -29,7 +29,7 @@ git使用一般有两种方式，一种是图形化界面（GUI），另一种�
 
 Hexo是搭建博客的核心,[点击进入hexo首页](https://hexo.io/)
 
-![image](F:\blog教程素材\hexo\index.jpg)  
+![image](/images/Hexo_blog/hexo/index.jpg)  
 - **首先创建博客本地的路径**  
 ![image](/images/Hexo_blog/hexo/1_newdir.jpg)  
 比如：我这里使用的是e:\my_blog文件夹  
