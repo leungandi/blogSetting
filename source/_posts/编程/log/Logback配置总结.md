@@ -1,7 +1,8 @@
 ---
 title: Logback配置总结
 date: 2017-05-11 15:22
-categroies: log
+categories: log
+tags: logback
 ---
 
 
