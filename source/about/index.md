@@ -4,7 +4,7 @@ date: 2017-05-02 18:26:43
 tags:
 ---
 
-![](/images/about/1_about.png)
+![](/images/about/1_index.jpg)
 
 ### 关于我  
   I'm Andrew Song
