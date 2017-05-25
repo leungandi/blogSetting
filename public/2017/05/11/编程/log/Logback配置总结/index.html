@@ -1,0 +1,960 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="logback," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是Logback?Logback是由log4j创始人设计的又一个开源日志组件,官方网站。 Logback配置根节点configuration 主要包含以下三个子节点 appender logger root    12345graph TDA[configuration]A--&amp;gt;B[appender]A--&amp;gt;C[logger]A--&amp;gt;D[root] 根节点的属性 scan:默">
+<meta name="keywords" content="logback">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Logback配置总结">
+<meta property="og:url" content="http://www.ddyc.vip/2017/05/11/编程/log/Logback配置总结/index.html">
+<meta property="og:site_name" content="燕良山好汉的博客">
+<meta property="og:description" content="什么是Logback?Logback是由log4j创始人设计的又一个开源日志组件,官方网站。 Logback配置根节点configuration 主要包含以下三个子节点 appender logger root    12345graph TDA[configuration]A--&amp;gt;B[appender]A--&amp;gt;C[logger]A--&amp;gt;D[root] 根节点的属性 scan:默">
+<meta property="og:updated_time" content="2017-05-25T13:34:34.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Logback配置总结">
+<meta name="twitter:description" content="什么是Logback?Logback是由log4j创始人设计的又一个开源日志组件,官方网站。 Logback配置根节点configuration 主要包含以下三个子节点 appender logger root    12345graph TDA[configuration]A--&amp;gt;B[appender]A--&amp;gt;C[logger]A--&amp;gt;D[root] 根节点的属性 scan:默">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ddyc.vip/2017/05/11/编程/log/Logback配置总结/"/>
+
+
+
+
+
+  <title>Logback配置总结 | 燕良山好汉的博客</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0de31a9b94e2d0af07ff23b34a742643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">燕良山好汉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.ddyc.vip/2017/05/11/编程/log/Logback配置总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Andrew Song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="燕良山好汉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Logback配置总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T15:22:00+08:00">
+                2017-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/log/" itemprop="url" rel="index">
+                    <span itemprop="name">log</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/05/11/编程/log/Logback配置总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是Logback"><a href="#什么是Logback" class="headerlink" title="什么是Logback?"></a>什么是Logback?</h3><p>Logback是由log4j创始人设计的又一个开源日志组件,<a href="http://logback.qos.ch" target="_blank" rel="external">官方网站</a>。</p>
+<h3 id="Logback配置"><a href="#Logback配置" class="headerlink" title="Logback配置"></a>Logback配置</h3><h4 id="根节点configuration"><a href="#根节点configuration" class="headerlink" title="根节点configuration"></a>根节点configuration</h4><ul>
+<li>主要包含以下三个子节点<ul>
+<li>appender</li>
+<li>logger</li>
+<li>root</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">graph TD</div><div class="line">A[configuration]</div><div class="line">A--&gt;B[appender]</div><div class="line">A--&gt;C[logger]</div><div class="line">A--&gt;D[root]</div></pre></td></tr></table></figure>
+<h4 id="根节点的属性"><a href="#根节点的属性" class="headerlink" title="根节点的属性"></a>根节点的属性</h4><ul>
+<li>scan:默认为true,当配置文件改变时,是否自动加载;</li>
+<li>scanPreiod:默认为1分钟(60 seconds),设置监测配置文件是否有修改的时间间隔,当scan为true时,此属性才会生效;</li>
+<li>debug:默认为false,设置为true时,会打印Logback的内部日志,查看Logback的运行状态;</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line">	&lt;!-- 省略中间的配置 --&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<h4 id="全局设置"><a href="#全局设置" class="headerlink" title="全局设置"></a>全局设置</h4><h5 id="设置变量"><a href="#设置变量" class="headerlink" title="设置变量"></a>设置变量</h5><ul>
+<li>用来自定义用户的变量,使用<proerty>来进行定义,property有2个属性值,我们可以使用”${USER_HOME}”来获取变量的值.<ul>
+<li>name:变量的名称</li>
+<li>value:变量的值</li>
+</ul>
+</proerty></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line">	&lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">	&lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<h5 id="获取时间戳字符串"><a href="#获取时间戳字符串" class="headerlink" title="获取时间戳字符串"></a>获取时间戳字符串</h5><ul>
+<li>获取时间戳字符串,使用<timestamp>来进行定义,timestamp也有2个属性值,获取值得方法同样为”${}”<ul>
+<li>key:名称</li>
+<li>datePattern:时间解析为字符串的格式<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line">	&lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">	&lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">	&lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</timestamp></li>
+</ul>
+<h4 id="子节点appender"><a href="#子节点appender" class="headerlink" title="子节点appender"></a>子节点appender</h4><ul>
+<li>appender是负责写日志的组件,有2个属性值:<ul>
+<li>name:appender的名称</li>
+<li>class:指定appender的全限定名</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!-- demo 1--&gt;</div><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line">	&lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">	&lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">	&lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line">	</div><div class="line">	&lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</div><div class="line">		&lt;encoder&gt;</div><div class="line">			&lt;pattern&gt;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n&lt;/pattern&gt;</div><div class="line">		&lt;/encoder&gt;</div><div class="line">	&lt;/appender&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>appender的clas常用的有三种</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">graph TD</div><div class="line">A[appender class]</div><div class="line">A--&gt;B[ch.qos.logback.core.ConsoleAppender]</div><div class="line">A--&gt;C[ch.qos.logback.core.rolling.RollingFileAppender]</div><div class="line">A--&gt;D[ch.qos.logback.core.FileAppender]</div></pre></td></tr></table></figure>
+<h5 id="ConsoleAppender"><a href="#ConsoleAppender" class="headerlink" title="ConsoleAppender:"></a>ConsoleAppender:</h5><p>日志输出到控制台,配置参考[demo 1]主要有2个子节点:  </p>
+<ul>
+<li><code>&lt;encoder&gt;</code>:对日志进行格式化;  </li>
+<li><code>&lt;target&gt;</code>:字符串System.out或者 System.err,默认 System.out;</li>
+</ul>
+<h5 id="RollingFileAppender"><a href="#RollingFileAppender" class="headerlink" title="RollingFileAppender:"></a>RollingFileAppender:</h5><p>滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件,主要有4个节点:</p>
+<ul>
+<li><code>&lt;file&gt;</code>:写入的文件名,相对/绝对路径都可以,如果目录不存在,Logback会创建</li>
+<li><code>&lt;append&gt;</code>:日志是否追加到文件结尾,可设置的参数为true或者false</li>
+<li><code>&lt;encoder&gt;</code>:对日志进行格式化</li>
+<li><code>&lt;rollingPolicy&gt;</code>:滚动策略,有TimeBasedRollingPolicy（按时间制定策略,常用这种）和FixedWindowRollingPolicy（按固定窗口算法）</li>
+<li><code>&lt;triggeringPolicy&gt;</code>: 触发器策略</li>
+<li><code>&lt;prudent&gt;</code>：当为true时，不支持FixedWindowRollingPolicy。支持TimeBasedRollingPolicy，但是有两个限制，1不支持也不允许文件压缩，2不能设置file属性，必须留空</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">graph TD</div><div class="line">A[rollingPolicy]</div><div class="line">A--&gt;B[ch.qos.logback.core.rolling.FixedWindowRollingPolicy]</div><div class="line">A--&gt;C[ch.qos.logback.core.rolling.TimeBasedRollingPolicy]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&lt;!-- demo 2--&gt;</div><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line">    &lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">    &lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">    &lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line">    </div><div class="line">    &lt;appender name=&quot;file&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</div><div class="line">        &lt;file&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;.log&lt;/&gt;</div><div class="line">        &lt;!-- 按日志大小切分日志文件 --&gt;</div><div class="line">    	&lt;!-- </div><div class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;&gt;</div><div class="line">			&lt;fileNamePattern&gt;$&#123;USER_HOME&#125;/$&#123;byDay&#125;/$&#123;FILE_NAME&#125;-$&#123;byDay&#125;-%i.log.zip&lt;/fileNamePattern&gt;</div><div class="line">			&lt;minIndex&gt;1&lt;/minIndex&gt;</div><div class="line">			&lt;maxIndex&gt;10&lt;/maxIndex&gt;</div><div class="line">		&lt;/rollingPolicy&gt;</div><div class="line">        &lt;!-- </div><div class="line">        当SizeBasedTriggeringPolicy触发时（即文件大小达到5MB），则启 动FixedWindowsRollingPolicy对日志文件进行滚动。MinIndex和MaxIndex分别表示最小计数和最大计数。 MaxFileSize则表示日志文件达到多少的时候进行滚动</div><div class="line">        --&gt;</div><div class="line">		&lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</div><div class="line">			&lt;maxFileSize&gt;5MB&lt;/maxFileSize&gt;</div><div class="line">		&lt;/triggeringPolicy&gt;</div><div class="line"> 		--&gt;</div><div class="line"> 		&lt;!-- 按照日期切分日志文件，每天生成一个日志文件 --&gt;</div><div class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</div><div class="line">			&lt;fileNamePattern&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;-%d&#123;yyyy-MM-dd&#125;.log.tar.gz&lt;/fileNamePattern&gt;  </div><div class="line">			&lt;!-- 保存?天的日志文件，默认永久保留 --&gt;</div><div class="line">			&lt;!-- &lt;maxHistory&gt;30&lt;/maxHistory&gt;  --&gt;</div><div class="line">		&lt;/rollingPolicy&gt;</div><div class="line">    	&lt;encoder&gt;</div><div class="line">		    &lt;pattern&gt;%-4relative %d - [%thread] %-5level %logger&#123;35&#125; - %msg%n &lt;/pattern&gt;</div><div class="line">    	&lt;/encoder&gt;</div><div class="line">    &lt;/appender&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<h5 id="FileAppender"><a href="#FileAppender" class="headerlink" title="FileAppender:"></a>FileAppender:</h5><p>日志添加到文件  </p>
+<ul>
+<li><code>&lt;file&gt;</code>:写入的文件名,相对/绝对路径都可以,如果目录不存在,Logback会创建</li>
+<li><code>&lt;append&gt;</code>:日志是否追加到文件结尾,可设置的参数为true或者false</li>
+<li><code>&lt;encoder&gt;</code>:对日志进行格式化</li>
+<li><code>&lt;prudent&gt;</code>:是否安全写入文件,默认false,设置为ture会影响效率</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;!-- demo 3--&gt;</div><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">    &lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">    &lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line">    </div><div class="line">    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;  </div><div class="line">        &lt;file&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;.log&lt;/&gt;</div><div class="line">        &lt;append&gt;true&lt;/append&gt;  </div><div class="line">        &lt;encoder&gt;  </div><div class="line">          &lt;pattern&gt;%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n&lt;/pattern&gt;  </div><div class="line">        &lt;/encoder&gt;  </div><div class="line">    &lt;/appender&gt;  </div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<h4 id="子节点logger"><a href="#子节点logger" class="headerlink" title="子节点logger"></a>子节点logger</h4><ul>
+<li>用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>,<loger>仅有一个name属性,一个可选的level和一个可选的addtivity属性<ul>
+<li>name:用来指定受此loger约束的某一个包或者具体的某一个类</li>
+<li>level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF,还有一个特俗值INHERITED或者同义词NULL,代表强制执行上级的级别</li>
+<li>addtivity:是否向上级loger传递打印信息,默认是true</li>
+</ul>
+</loger></appender></li>
+<li><code>&lt;loger&gt;</code>:可以包含零个或多个<code>&lt;appender-ref&gt;</code>元素,标识这个appender将会添加到这个loger</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;  </div><div class="line">    &lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">    &lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line">    &lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line">    </div><div class="line">    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</div><div class="line">    	&lt;encoder&gt;</div><div class="line">		    &lt;pattern&gt;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n&lt;/pattern&gt;</div><div class="line">    	&lt;/encoder&gt;</div><div class="line">    &lt;/appender&gt;</div><div class="line">    </div><div class="line">    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;  </div><div class="line">        &lt;file&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;.log&lt;/&gt;</div><div class="line">        &lt;append&gt;true&lt;/append&gt;  </div><div class="line">        &lt;encoder&gt;  </div><div class="line">          &lt;pattern&gt;%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n&lt;/pattern&gt;  </div><div class="line">        &lt;/encoder&gt;  </div><div class="line">    &lt;/appender&gt; </div><div class="line">    </div><div class="line">    &lt;logger name=&quot;com.diandian&quot; level=&quot;debug&quot; additivity=&quot;false&quot;&gt;</div><div class="line">		&lt;appender-ref ref=&quot;FILE&quot; /&gt;</div><div class="line">		&lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</div><div class="line">	&lt;/logger&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<h4 id="子节点root"><a href="#子节点root" class="headerlink" title="子节点root"></a>子节点root</h4><ul>
+<li>root其实是一个根logger,name的名称已经被命名为”root”,level属性的值同logger;</li>
+</ul>
+<h4 id="encoder参数介绍"><a href="#encoder参数介绍" class="headerlink" title="encoder参数介绍"></a>encoder参数介绍</h4><ul>
+<li>负责两件事<ul>
+<li>一是把日志信息转换成字节数组</li>
+<li>二是把字节数组写入到输出流</li>
+</ul>
+</li>
+<li>它有一个<pattern>子节点,用来设置日志的输出格式,使用“%”加“转换符”方式，如果要输出“%”，则必须用“\”对“\%”进行转义</pattern></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;encoder&gt;  </div><div class="line">  &lt;pattern&gt;%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n&lt;/pattern&gt;  </div><div class="line">&lt;/encoder&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li><code>&lt;pattern&gt;</code>格式介绍:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c {length }  lo {length }  logger {length }</td>
+<td>输出日志的logger名</td>
+</tr>
+<tr>
+<td>d {pattern } date {pattern }</td>
+<td>输出日志的打印日志,模式语法与java.text.SimpleDateFormat 兼容</td>
+</tr>
+<tr>
+<td>m msg message</td>
+<td>输出应用程序提供的信息</td>
+</tr>
+<tr>
+<td>n</td>
+<td>输出平台相关的分行符“\n”或者“\r\n”</td>
+</tr>
+<tr>
+<td>p  le  level</td>
+<td>输出日志级别</td>
+</tr>
+<tr>
+<td>r relative</td>
+<td>输出从程序启动到创建日志记录的时间,单位是毫秒</td>
+</tr>
+<tr>
+<td>t thread</td>
+<td>输出线程名</td>
+</tr>
+<tr>
+<td>replace(p ){r, t}</td>
+<td>p 为日志内容,r 是正则表达式,将p 中符合r 的内容替换为t,例如, “%replace(%msg){‘\s’, ‘’}”</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>格式修饰符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-(减号)</td>
+<td>左对齐</td>
+</tr>
+<tr>
+<td>4(十进制数表示)</td>
+<td>最小宽度,如果字符小于最小宽度,则左填充或右填充，默认是左填充（即右对齐）,填充符为空格,如果字符大于最小宽度,字符永远不会被截断</td>
+</tr>
+<tr>
+<td>.4(点加十进制数表示)</td>
+<td>最大宽度,如果字符大于最大宽度,则从前面截断;点符号“.”后面加减号“-”在加数字,表示从尾部截断</td>
+</tr>
+</tbody>
+</table>
+<p><strong>重要</strong>:格式修饰符位于“%”和转换符之间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&lt;!--完整DEMO--&gt;</div><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</div><div class="line">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;1800 seconds&quot; debug=&quot;false&quot;&gt;</div><div class="line"></div><div class="line">	&lt;property name=&quot;USER_HOME&quot; value=&quot;/opt/logs&quot; /&gt;</div><div class="line">	&lt;property scope=&quot;context&quot; name=&quot;FILE_NAME&quot; value=&quot;test_log&quot; /&gt;</div><div class="line"></div><div class="line">	&lt;timestamp key=&quot;byDay&quot; datePattern=&quot;yyyy-MM-dd&quot; /&gt;</div><div class="line"></div><div class="line">	&lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</div><div class="line">		&lt;encoder&gt;</div><div class="line">			&lt;pattern&gt;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n&lt;/pattern&gt;</div><div class="line">		&lt;/encoder&gt;</div><div class="line">	&lt;/appender&gt;</div><div class="line"></div><div class="line">	&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</div><div class="line">		&lt;file&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;.log&lt;/file&gt;</div><div class="line">		&lt;!-- 按照日期切分日志文件，每天生成一个日志文件 --&gt;</div><div class="line">		&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</div><div class="line">			&lt;fileNamePattern&gt;$&#123;USER_HOME&#125;/$&#123;FILE_NAME&#125;-%d&#123;yyyy-MM-dd&#125;.log.tar.gz&lt;/fileNamePattern&gt;  </div><div class="line">		&lt;/rollingPolicy&gt;</div><div class="line">		&lt;!-- 日志输出格式 --&gt;</div><div class="line">		&lt;encoder&gt;</div><div class="line">			&lt;pattern&gt;%-4relative %d - [%thread] %-5level %logger&#123;35&#125; - %msg%n &lt;/pattern&gt;</div><div class="line">		&lt;/encoder&gt;</div><div class="line">	&lt;/appender&gt;</div><div class="line">	&lt;logger name=&quot;com.demo&quot; level=&quot;debug&quot; additivity=&quot;false&quot;&gt;</div><div class="line">		&lt;appender-ref ref=&quot;FILE&quot; /&gt;</div><div class="line">		&lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</div><div class="line">	&lt;/logger&gt;</div><div class="line">	&lt;root level=&quot;INFO&quot;&gt;</div><div class="line">		&lt;appender-ref ref=&quot;FILE&quot; /&gt;</div><div class="line">		&lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</div><div class="line">	&lt;/root&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/logback/" rel="tag"># logback</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/25/编程/spring/第一篇之初识Spring/" rel="next" title="第一篇之初识Spring">
+                <i class="fa fa-chevron-left"></i> 第一篇之初识Spring
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/09/编程/blog/搭建hexo+gitHub博客/" rel="prev" title="搭建hexo+gitHub博客">
+                搭建hexo+gitHub博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Andrew Song" />
+          <p class="site-author-name" itemprop="name">Andrew Song</p>
+           
+              <p class="site-description motion-element" itemprop="description">只要开始,就不晚!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.cnblogs.com/" title="CNBLOG" target="_blank">CNBLOG</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Logback"><span class="nav-number">1.</span> <span class="nav-text">什么是Logback?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Logback配置"><span class="nav-number">2.</span> <span class="nav-text">Logback配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根节点configuration"><span class="nav-number">2.1.</span> <span class="nav-text">根节点configuration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根节点的属性"><span class="nav-number">2.2.</span> <span class="nav-text">根节点的属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置"><span class="nav-number">2.3.</span> <span class="nav-text">全局设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置变量"><span class="nav-number">2.3.1.</span> <span class="nav-text">设置变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取时间戳字符串"><span class="nav-number">2.3.2.</span> <span class="nav-text">获取时间戳字符串</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子节点appender"><span class="nav-number">2.4.</span> <span class="nav-text">子节点appender</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ConsoleAppender"><span class="nav-number">2.4.1.</span> <span class="nav-text">ConsoleAppender:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RollingFileAppender"><span class="nav-number">2.4.2.</span> <span class="nav-text">RollingFileAppender:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FileAppender"><span class="nav-number">2.4.3.</span> <span class="nav-text">FileAppender:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子节点logger"><span class="nav-number">2.5.</span> <span class="nav-text">子节点logger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子节点root"><span class="nav-number">2.6.</span> <span class="nav-text">子节点root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#encoder参数介绍"><span class="nav-number">2.7.</span> <span class="nav-text">encoder参数介绍</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andrew Song</span>
+</div>
+
+<!-- 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+ -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "a65e94b0556544308ae1a6ec892f9609",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
