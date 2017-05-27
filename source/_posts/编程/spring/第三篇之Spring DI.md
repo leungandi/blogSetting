@@ -101,6 +101,7 @@ xml文件中的配置相当于我们代码中写`User user = new User();`。
 
 ##### 有参构造
 - xml配置
+
 ```
 <!-- 有参构造 -->
 <bean id="user1" class="com.szl.springioc.model.User">
@@ -123,7 +124,9 @@ public void testDI() {
 }
 
 ```
+
 - 输出
+
 ```
 User [name=张三, age=18, email=zhangsan@qq.com]
 ```
@@ -135,6 +138,7 @@ xml文件中的配置相当于我们代码中写`User user = new User("张三","
 
 #### setter注入
 - xml配置
+
 ```
 <!-- setter注入 -->
 <bean id="user2" class="com.szl.springioc.model.User">
@@ -230,6 +234,7 @@ public class Collections {
 ```
 #### 注入Boolean类型
 - xml配置
+
 ```
 <!-- setter注入 boolean类型 -->
 <bean id="collectionsBoolean" class="com.szl.springioc.model.Collections">
@@ -250,11 +255,14 @@ public void testDIForCollections() {
 
 ```
 - 输出
+
 ```
 Collections [flag=true, mapParams=null, listParmas=null, setParams=null]
 
 ```
+
 - 结论
+
 setter注入Boolean类型，`<property>`标签中的value值可以是以下几种来代表“真假”
 
 NO.|支持的参数值
@@ -266,6 +274,7 @@ NO.|支持的参数值
 
 #### 注List类型
 - xml文件配置
+
 ```
 <!-- setter注入 List类型 -->
 <bean id="collectionsList" class="com.szl.springioc.model.Collections">
@@ -301,6 +310,7 @@ Collections [flag=false, mapParams=null, listParmas=[test, test1], setParams=nul
 
 #### 注Map类型
 - xml文件配置
+
 ```
 <!-- setter注入 Map类型 -->
 <bean id="collectionsMap" class="com.szl.springioc.model.Collections">
@@ -331,13 +341,17 @@ public void testDIForCollections() {
 Collections [flag=false, mapParams={key1=你好, key2=世界}, listParmas=null, setParams=null]
 ```
 - 结论
+
 注入List需要使用`<map>`标签，该标签中有可选的key-type、value-type属性，用来指定数据类型。
 
 #### 注入Set类型
+
 注入Set需要使用`<set>`标签，同注入List一样，该标签中有可选的value-type属性，用来指定数据类型。
 
 ### p命名空间简化setter注入
+
 - xml文件配置
+
 ```
 <!-- p命名空间 -->
 <bean id="collectionsP" class="com.szl.springioc.model.Collections" 
@@ -345,6 +359,7 @@ Collections [flag=false, mapParams={key1=你好, key2=世界}, listParmas=null, 
 />
 
 ```
+
 - test
 
 ```
@@ -355,12 +370,14 @@ public void testDIForCollections() {
 	
 }
 ```
+
 - 输出
 
 ```
 Collections [flag=true, mapParams=null, listParmas=null, setParams=null]
 ```
 - 结论
+
 `p:flag="1"`等价于`<property name="flag" value="true"></property>`，可以混合使用哦。
 
 
