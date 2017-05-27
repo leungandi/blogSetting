@@ -18,7 +18,7 @@ tags: Spring
 
 1.定义HelloIoc的接口
 ```
-package com.szl.SpringIoc.Interface;
+package com.szl.springioc.dao;
 
 public interface HelloIoc{
 	
@@ -29,9 +29,9 @@ public interface HelloIoc{
 ```
 2.接口定义完成，实现接口来完成打印“Hello Ioc”的功能
 ```
-package com.szl.SpringIoc.InterfaceImpl;
+package com.szl.springioc.dao.impl;
 
-import com.szl.SpringIoc.Interface.HelloIoc;
+import com.szl.springioc.dao.HelloIoc;
 
 public class HelloIocImpl implements HelloIoc{
 
@@ -58,7 +58,7 @@ public class HelloIocImpl implements HelloIoc{
 	    http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
-	<bean id="helloIoc" class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<bean id="helloIoc" class="com.szl.springioc.dao.impl.HelloIocImpl" />
 
 </beans>
 
@@ -72,8 +72,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.szl.SpringIoc.Interface.HelloIoc;
-import com.szl.SpringIoc.InterfaceImpl.HelloIocImpl;
+import com.szl.springioc.dao.HelloIoc;
+import com.szl.springioc.dao.impl.HelloIocImpl;
 
 public class SpringTest {
 	ApplicationContext ac;
@@ -103,13 +103,13 @@ public class SpringTest {
 ```
 <beans>
 	<!-- 使用ID作为标识符 -->
-	<bean id="helloIoc"  class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<bean id="helloIoc"  class="com.szl.springioc.dao.impl.HelloIocImpl" />
 	<!-- 使用NAME作为标识符 -->
-	<bean name="helloIocName" class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<bean name="helloIocName" class="com.szl.springioc.dao.impl.HelloIocImpl" />
 	<!-- 不使用任何标识符 ,仅使用类的全限定名-->
-	<bean class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<bean class="com.szl.springioc.dao.impl.HelloIocImpl" />
 	<!-- 同时使用ID和NAME，如果名称相同,容器会自动处理 -->
-	<bean id="helloIocSame" name="helloIocSame"  class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<bean id="helloIocSame" name="helloIocSame"  class="com.szl.springioc.dao.impl.HelloIocImpl" />
 </beans>
 
 ```
