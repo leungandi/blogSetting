@@ -97,6 +97,69 @@ public class SpringTest {
 
 ---
 
+### IOC容器的XML文件配置
+#### Bean标签
+
+```
+<beans>
+	<!-- 使用ID作为标识符 -->
+	<bean id="helloIoc"  class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<!-- 使用NAME作为标识符 -->
+	<bean name="helloIocName" class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<!-- 不使用任何标识符 ,仅使用类的全限定名-->
+	<bean class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+	<!-- 同时使用ID和NAME，如果名称相同,容器会自动处理 -->
+	<bean id="helloIocSame" name="helloIocSame"  class="com.szl.SpringIoc.InterfaceImpl.HelloIocImpl" />
+</beans>
+
+```
+Spring IoC容器目的就是管理Bean，`<bean>`标签主要用来进行Bean定义，主要有以下属性：
+- id:  Bean的命名，使用id作为“标识符”，必须唯一。
+- name:  Bean的命名，使用name作为“标识符”，必须唯一。
+- scope：Bean的作用域。
+- class:类的全限定名。
+
+测试实例如下：
+```
+public class SpringTest {
+	ApplicationContext ac;
+	@Before
+	public void init(){
+		//读取配置文件从而实例化IOC容器
+		ac = new ClassPathXmlApplicationContext("HelloIoc.xml");
+	}
+
+	@Test
+	public void testBean(){
+		//测试bean使用id
+		HelloIoc hiId = (HelloIocImpl) ac.getBean("helloIoc");
+		hiId.sayHello();
+		
+		//测试bean使用name
+		HelloIoc hiName = (HelloIocImpl) ac.getBean("helloIocName");
+		hiName.sayHello();
+		
+		//测试bean仅使用类的全限定名
+		HelloIoc hi = ac.getBean(HelloIocImpl.class);
+		hi.sayHello();
+		
+		//测试Bean同时使用id和name
+		HelloIoc hiIdAndName = (HelloIocImpl) ac.getBean("helloIocSame");
+		hiIdAndName.sayHello();
+	}
+}
+
+```
+#### Bean的作用域
+作用域|说明
+---|---
+singleton|默认值，Spring已单例模式创建Bean的实例，即容器中该Bean的实例只有一个
+prototype|每次从容器中获取Bean时，都会创建一个新的实例
+request|用于WEB应用环境，针对每次HTTP请求都会创建一个实例
+session|用于WEB应用环境，同一个回话共享一个实例
+global session|仅在Protlet的WEB应用中使用，同一个全局会话共享一个实例，对于非Protlet环境，等同于session
+
+
 ### 解读IOC容器
 1.org.springframework.beans和org.springframework.context是Spring Ioc的基本组成，BeanFactory是整个IOC容器的最基本接口。  
 2.BeanFactory接口有3个类：
@@ -109,8 +172,7 @@ public class SpringTest {
 
 3.ApplicationContext接口继承了HierarchicalBeanFactory和ListableBeanFactory，所以ApplicationContext包含BeanFactory的所有功能，而已在国际化支持、资源访问（如URL和文件）、事件传播等方面进行了良好的支持。
 
-4.实例化容器(ApplicationContext)  
-ApplicationContext的常用实现类
+4.shilihuaApplicationContext的常用实现类
 - ClassPathXmlApplicationContext  
 从类路径ClassPath中寻找指定的XML配置文件，找到并装载完成ApplicationContext的实例化工作。
 - FileSystemXmlApplicationContext  
