@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="了解IOCIOC是什么控制反转（Inversion of Control），不是一种技术，而是一种思想，是面向对象编程中的一种设计原则，用来降低代码之间的耦合度。 IOC的好处对象的创建和依赖由容器负责，对象与对象之间是松耦合的，利于功能复用。 IOC和DI DI即依赖注入（Dependency Injection），由容器动态的将某个依赖关系注入到组件之中，它们是spring核心思想的不同方面的">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二篇之Spirng IOC">
+<meta property="og:url" content="http://www.ddyc.vip/2017/05/26/编程/spring/第二篇之Spirng IOC/index.html">
+<meta property="og:site_name" content="燕良山好汉的博客">
+<meta property="og:description" content="了解IOCIOC是什么控制反转（Inversion of Control），不是一种技术，而是一种思想，是面向对象编程中的一种设计原则，用来降低代码之间的耦合度。 IOC的好处对象的创建和依赖由容器负责，对象与对象之间是松耦合的，利于功能复用。 IOC和DI DI即依赖注入（Dependency Injection），由容器动态的将某个依赖关系注入到组件之中，它们是spring核心思想的不同方面的">
+<meta property="og:updated_time" content="2017-05-27T06:40:34.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第二篇之Spirng IOC">
+<meta name="twitter:description" content="了解IOCIOC是什么控制反转（Inversion of Control），不是一种技术，而是一种思想，是面向对象编程中的一种设计原则，用来降低代码之间的耦合度。 IOC的好处对象的创建和依赖由容器负责，对象与对象之间是松耦合的，利于功能复用。 IOC和DI DI即依赖注入（Dependency Injection），由容器动态的将某个依赖关系注入到组件之中，它们是spring核心思想的不同方面的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ddyc.vip/2017/05/26/编程/spring/第二篇之Spirng IOC/"/>
+
+
+
+
+
+  <title>第二篇之Spirng IOC | 燕良山好汉的博客</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0de31a9b94e2d0af07ff23b34a742643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">燕良山好汉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.ddyc.vip/2017/05/26/编程/spring/第二篇之Spirng IOC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Andrew Song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="燕良山好汉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                第二篇之Spirng IOC
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T13:49:00+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring的那点事/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring的那点事</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/05/26/编程/spring/第二篇之Spirng IOC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="了解IOC"><a href="#了解IOC" class="headerlink" title="了解IOC"></a>了解IOC</h3><h4 id="IOC是什么"><a href="#IOC是什么" class="headerlink" title="IOC是什么"></a>IOC是什么</h4><p>控制反转（Inversion of Control），不是一种技术，而是一种思想，是面向对象编程中的一种设计原则，用来降低代码之间的耦合度。</p>
+<h4 id="IOC的好处"><a href="#IOC的好处" class="headerlink" title="IOC的好处"></a>IOC的好处</h4><p>对象的创建和依赖由容器负责，对象与对象之间是松耦合的，利于功能复用。</p>
+<h4 id="IOC和DI"><a href="#IOC和DI" class="headerlink" title="IOC和DI"></a>IOC和DI</h4><ul>
+<li>DI即依赖注入（Dependency Injection），由容器动态的将某个依赖关系注入到组件之中，它们是spring核心思想的不同方面的描述。</li>
+<li>IOC是目的，DI是手段，IOC让程序员不需要去new对象，由IOC容器负责，当需要使用某些组件的时候由框架注入（DI）进来。</li>
+</ul>
+<h4 id="打印Hello-Ioc"><a href="#打印Hello-Ioc" class="headerlink" title="打印Hello Ioc"></a>打印Hello Ioc</h4><p>1.定义HelloIoc的接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">package com.szl.springioc.dao;</div><div class="line"></div><div class="line">public interface HelloIoc&#123;</div><div class="line">	</div><div class="line">	public void sayHello();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2.接口定义完成，实现接口来完成打印“Hello Ioc”的功能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package com.szl.springioc.dao.impl;</div><div class="line"></div><div class="line">import com.szl.springioc.dao.HelloIoc;</div><div class="line"></div><div class="line">public class HelloIocImpl implements HelloIoc&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void sayHello() &#123;</div><div class="line">		System.out.println(&quot;hello Ioc&quot;);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3.接下来我们通过配置文件让Spring Ioc来管理它们，我们在工程的resources目录建立一个HelloIoc.xml文件，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</div><div class="line">	xmlns:context=&quot;http://www.springframework.org/schema/context&quot; xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">	xsi:schemaLocation=&quot;</div><div class="line">		http://www.springframework.org/schema/beans</div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd</div><div class="line">		http://www.springframework.org/schema/context</div><div class="line">		http://www.springframework.org/schema/context/spring-context-4.0.xsd</div><div class="line">		http://www.springframework.org/schema/tx</div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd</div><div class="line">	    http://www.springframework.org/schema/aop </div><div class="line">        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd&quot;&gt;</div><div class="line">	</div><div class="line">	&lt;bean id=&quot;helloIoc&quot; class=&quot;com.szl.springioc.dao.impl.HelloIocImpl&quot; /&gt;</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<p>4.现在我们可以实例化容器，从容器中获取对象，来实现我们的功能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">package com.szl.SpringIoc.test;</div><div class="line"></div><div class="line">import org.junit.Before;</div><div class="line">import org.junit.Test;</div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.support.ClassPathXmlApplicationContext;</div><div class="line"></div><div class="line">import com.szl.springioc.dao.HelloIoc;</div><div class="line">import com.szl.springioc.dao.impl.HelloIocImpl;</div><div class="line"></div><div class="line">public class SpringTest &#123;</div><div class="line">	ApplicationContext ac;</div><div class="line">	@Before</div><div class="line">	public void init()&#123;</div><div class="line">		//读取配置文件从而实例化IOC容器</div><div class="line">		ac = new ClassPathXmlApplicationContext(&quot;HelloIoc.xml&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Test</div><div class="line">	public void testHello() &#123;</div><div class="line">		//从容器中获取bean</div><div class="line">		HelloIoc hi = (HelloIocImpl) ac.getBean(&quot;helloIoc&quot;);</div><div class="line">		//执行业务逻辑</div><div class="line">		hi.sayHello();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>执行Junit Test后，我们可以在控制台看到程序已经打印出“Hello Ioc”。</p>
+<hr>
+<h3 id="IOC容器的XML文件配置"><a href="#IOC容器的XML文件配置" class="headerlink" title="IOC容器的XML文件配置"></a>IOC容器的XML文件配置</h3><h4 id="Bean标签"><a href="#Bean标签" class="headerlink" title="Bean标签"></a>Bean标签</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;beans&gt;</div><div class="line">	&lt;!-- 使用ID作为标识符 --&gt;</div><div class="line">	&lt;bean id=&quot;helloIoc&quot;  class=&quot;com.szl.springioc.dao.impl.HelloIocImpl&quot; /&gt;</div><div class="line">	&lt;!-- 使用NAME作为标识符 --&gt;</div><div class="line">	&lt;bean name=&quot;helloIocName&quot; class=&quot;com.szl.springioc.dao.impl.HelloIocImpl&quot; /&gt;</div><div class="line">	&lt;!-- 不使用任何标识符 ,仅使用类的全限定名--&gt;</div><div class="line">	&lt;bean class=&quot;com.szl.springioc.dao.impl.HelloIocImpl&quot; /&gt;</div><div class="line">	&lt;!-- 同时使用ID和NAME，如果名称相同,容器会自动处理 --&gt;</div><div class="line">	&lt;bean id=&quot;helloIocSame&quot; name=&quot;helloIocSame&quot;  class=&quot;com.szl.springioc.dao.impl.HelloIocImpl&quot; /&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<p>Spring IoC容器目的就是管理Bean，<code>&lt;bean&gt;</code>标签主要用来进行Bean定义，主要有以下属性：</p>
+<ul>
+<li>id:  Bean的命名，使用id作为“标识符”，必须唯一。</li>
+<li>name:  Bean的命名，使用name作为“标识符”，必须唯一。</li>
+<li>scope：Bean的作用域。</li>
+<li>class:类的全限定名。</li>
+</ul>
+<p>测试实例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class SpringTest &#123;</div><div class="line">	ApplicationContext ac;</div><div class="line">	@Before</div><div class="line">	public void init()&#123;</div><div class="line">		//读取配置文件从而实例化IOC容器</div><div class="line">		ac = new ClassPathXmlApplicationContext(&quot;HelloIoc.xml&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Test</div><div class="line">	public void testBean()&#123;</div><div class="line">		//测试bean使用id</div><div class="line">		HelloIoc hiId = (HelloIocImpl) ac.getBean(&quot;helloIoc&quot;);</div><div class="line">		hiId.sayHello();</div><div class="line">		</div><div class="line">		//测试bean使用name</div><div class="line">		HelloIoc hiName = (HelloIocImpl) ac.getBean(&quot;helloIocName&quot;);</div><div class="line">		hiName.sayHello();</div><div class="line">		</div><div class="line">		//测试bean仅使用类的全限定名</div><div class="line">		HelloIoc hi = ac.getBean(HelloIocImpl.class);</div><div class="line">		hi.sayHello();</div><div class="line">		</div><div class="line">		//测试Bean同时使用id和name</div><div class="line">		HelloIoc hiIdAndName = (HelloIocImpl) ac.getBean(&quot;helloIocSame&quot;);</div><div class="line">		hiIdAndName.sayHello();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="Bean的作用域"><a href="#Bean的作用域" class="headerlink" title="Bean的作用域"></a>Bean的作用域</h4><table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>singleton</td>
+<td>默认值，Spring已单例模式创建Bean的实例，即容器中该Bean的实例只有一个</td>
+</tr>
+<tr>
+<td>prototype</td>
+<td>每次从容器中获取Bean时，都会创建一个新的实例</td>
+</tr>
+<tr>
+<td>request</td>
+<td>用于WEB应用环境，针对每次HTTP请求都会创建一个实例</td>
+</tr>
+<tr>
+<td>session</td>
+<td>用于WEB应用环境，同一个回话共享一个实例</td>
+</tr>
+<tr>
+<td>global session</td>
+<td>仅在Protlet的WEB应用中使用，同一个全局会话共享一个实例，对于非Protlet环境，等同于session</td>
+</tr>
+</tbody>
+</table>
+<h3 id="解读IOC容器"><a href="#解读IOC容器" class="headerlink" title="解读IOC容器"></a>解读IOC容器</h3><p>1.org.springframework.beans和org.springframework.context是Spring Ioc的基本组成，BeanFactory是整个IOC容器的最基本接口。<br>2.BeanFactory接口有3个类：</p>
+<ul>
+<li>AutowireCapableBeanFactory<br>该接口的功能是主要实现了Bean的自动装配功能，为实例Bean暴露了装配的功能</li>
+<li>HierarchicalBeanFactory<br>定义了BeanFactory的父子链结构 </li>
+<li>ListableBeanFactory<br>该接口的功能是用来列出所有Bean的名称、类型、注解等信息   </li>
+</ul>
+<p>3.ApplicationContext接口继承了HierarchicalBeanFactory和ListableBeanFactory，所以ApplicationContext包含BeanFactory的所有功能，而已在国际化支持、资源访问（如URL和文件）、事件传播等方面进行了良好的支持。</p>
+<p>4.shilihuaApplicationContext的常用实现类</p>
+<ul>
+<li>ClassPathXmlApplicationContext<br>从类路径ClassPath中寻找指定的XML配置文件，找到并装载完成ApplicationContext的实例化工作。</li>
+<li>FileSystemXmlApplicationContext<br>从指定的文件系统路径中寻找指定的XML配置文件，找到并装载完成ApplicationContext的实例化工作。</li>
+<li>XmlWebApplicationContext<br>从Web应用中寻找指定的XML配置文件，找到并装载完成ApplicationContext的实例化工作。</li>
+</ul>
+<p>这些实现类的主要区别就是装载Spring配置文件实例化ApplicationContext容器的方式不同，在ApplicationContext实例化后，同样通过getBean方法从ApplicationContext容器中获取装配好的Bean实例以供使用。</p>
+<p><strong>注：在Java项目中通过ClassPathXmlApplicationContext类手动实例化ApplicationContext容器通常是不二之选。但对于Web项目就不行了，Web项目的启动是由相应的Web服务器负责的，因此，在Web项目中ApplicationContext容器的实例化工作最好交给Web服务器来完成。</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/27/编程/spring/第三篇之Spring DI/" rel="next" title="第三篇之Spring DI">
+                <i class="fa fa-chevron-left"></i> 第三篇之Spring DI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/25/编程/spring/第一篇之初识Spring/" rel="prev" title="第一篇之初识Spring">
+                第一篇之初识Spring <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Andrew Song" />
+          <p class="site-author-name" itemprop="name">Andrew Song</p>
+           
+              <p class="site-description motion-element" itemprop="description">只要开始,就不晚!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.cnblogs.com/" title="CNBLOG" target="_blank">CNBLOG</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#了解IOC"><span class="nav-number">1.</span> <span class="nav-text">了解IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC是什么"><span class="nav-number">1.1.</span> <span class="nav-text">IOC是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC的好处"><span class="nav-number">1.2.</span> <span class="nav-text">IOC的好处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC和DI"><span class="nav-number">1.3.</span> <span class="nav-text">IOC和DI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打印Hello-Ioc"><span class="nav-number">1.4.</span> <span class="nav-text">打印Hello Ioc</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOC容器的XML文件配置"><span class="nav-number">2.</span> <span class="nav-text">IOC容器的XML文件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bean标签"><span class="nav-number">2.1.</span> <span class="nav-text">Bean标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bean的作用域"><span class="nav-number">2.2.</span> <span class="nav-text">Bean的作用域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解读IOC容器"><span class="nav-number">3.</span> <span class="nav-text">解读IOC容器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andrew Song</span>
+</div>
+
+<!-- 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+ -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "a65e94b0556544308ae1a6ec892f9609",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
