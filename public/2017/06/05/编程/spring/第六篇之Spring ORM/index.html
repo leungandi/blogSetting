@@ -1,0 +1,864 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="ORM是什么? 对象关系映射（英语：(Object Relational Mapping，简称ORM，或O/RM，或O/R mapping），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换  常见的ORM框架有JPA、MYBATIS、HIBERNATE等。 Spring对ORM的支持Spring对ORM的支持主要表现在以下方面 一致的异常体系结构Spring提供了一种方便的">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第六篇之Spring ORM">
+<meta property="og:url" content="http://www.ddyc.vip/2017/06/05/编程/spring/第六篇之Spring ORM/index.html">
+<meta property="og:site_name" content="燕良山好汉的博客">
+<meta property="og:description" content="ORM是什么? 对象关系映射（英语：(Object Relational Mapping，简称ORM，或O/RM，或O/R mapping），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换  常见的ORM框架有JPA、MYBATIS、HIBERNATE等。 Spring对ORM的支持Spring对ORM的支持主要表现在以下方面 一致的异常体系结构Spring提供了一种方便的">
+<meta property="og:updated_time" content="2017-06-05T09:26:05.527Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第六篇之Spring ORM">
+<meta name="twitter:description" content="ORM是什么? 对象关系映射（英语：(Object Relational Mapping，简称ORM，或O/RM，或O/R mapping），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换  常见的ORM框架有JPA、MYBATIS、HIBERNATE等。 Spring对ORM的支持Spring对ORM的支持主要表现在以下方面 一致的异常体系结构Spring提供了一种方便的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ddyc.vip/2017/06/05/编程/spring/第六篇之Spring ORM/"/>
+
+
+
+
+
+  <title>第六篇之Spring ORM | 燕良山好汉的博客</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0de31a9b94e2d0af07ff23b34a742643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">燕良山好汉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.ddyc.vip/2017/06/05/编程/spring/第六篇之Spring ORM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Andrew Song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="燕良山好汉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                第六篇之Spring ORM
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T14:56:00+08:00">
+                2017-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring的那点事/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring的那点事</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/06/05/编程/spring/第六篇之Spring ORM/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ORM是什么"><a href="#ORM是什么" class="headerlink" title="ORM是什么?"></a>ORM是什么?</h2><blockquote>
+<p>对象关系映射（英语：(Object Relational Mapping，简称ORM，或O/RM，或O/R mapping），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换</p>
+</blockquote>
+<p>常见的ORM框架有JPA、MYBATIS、HIBERNATE等。</p>
+<h2 id="Spring对ORM的支持"><a href="#Spring对ORM的支持" class="headerlink" title="Spring对ORM的支持"></a>Spring对ORM的支持</h2><p>Spring对ORM的支持主要表现在以下方面</p>
+<h3 id="一致的异常体系结构"><a href="#一致的异常体系结构" class="headerlink" title="一致的异常体系结构"></a>一致的异常体系结构</h3><p>Spring提供了一种方便的方法，把特定于某种技术的异常，如SQLException， 转化为自己的异常，这种异常属于以 DataAccessException为根的异常层次。这些异常封装了原始异常对象，这样就不会有丢失任何错误信息的风险。</p>
+<h3 id="一致的DAO抽象支持"><a href="#一致的DAO抽象支持" class="headerlink" title="一致的DAO抽象支持"></a>一致的DAO抽象支持</h3><p>为了便于以一种一致的方式使用各种数据访问技术，如JDBC、JDO和Hibernate， Spring提供了一套抽象DAO类扩展。这些抽象类提供了一些方法，通过它们可以 获得与当前使用的数据访问技术相关的数据源和其他配置信息。</p>
+<ul>
+<li><p>JdbcDaoSupport：JDBC数据访问对象的基类。 需要一个DataSource，同时为子类提供 JdbcTemplate。</p>
+</li>
+<li><p>HibernateDaoSupport： Hibernate数据访问对象的基类。 需要一个SessionFactory，同时为子类提供 HibernateTemplate。也可以选择直接通过 提供一个HibernateTemplate来初始化。</p>
+</li>
+<li><p>JdoDaoSupport：JDO数据访问对象的基类。 需要设置一个PersistenceManagerFactory， 同时为子类提供JdoTemplate。</p>
+</li>
+<li>JpaDaoSupport：JPA数据访问对象的基类。 需要一个EntityManagerFactory，同时 为子类提供JpaTemplate。</li>
+</ul>
+<h3 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h3><p>Spring对所有数据访问提供一致的事务管理，通过配置方式，简化事务管理。</p>
+<hr>
+<p><strong>本文主要记录Spring和Mybatis的集成</strong></p>
+<h2 id="Spring集成Mybatis"><a href="#Spring集成Mybatis" class="headerlink" title="Spring集成Mybatis?"></a>Spring集成Mybatis?</h2><h3 id="Mybatis介绍"><a href="#Mybatis介绍" class="headerlink" title="Mybatis介绍"></a>Mybatis介绍</h3><p><a href="http://www.mybatis.org/mybatis-3/zh/index.html" target="_blank" rel="external">了解Mybatis,请点击前往</a></p>
+<h3 id="如何集成"><a href="#如何集成" class="headerlink" title="如何集成"></a>如何集成</h3><h4 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h4><blockquote>
+<p>MyBatis-Spring 会帮助你将 MyBatis 代码无缝地整合到 Spring 中。 使用这个类库中的类, Spring 将会加载必要的 MyBatis 工厂类和 session 类。 这个类库也提供一个简单的方式来注入 MyBatis 数据映射器和 SqlSession 到业务层的 bean 中。 而且它也会处理事务, 翻译 MyBatis 的异常到 Spring 的 DataAccessException 异常(数据访问异常,译者注)中。最终,它并 不会依赖于 MyBatis,Spring 或 MyBatis-Spring 来构建应用程序代码。<br>要使用 MyBatis-Spring 模块,你只需要包含 mybatis-spring-x.x.x.jar 文 件就可以了,并在类路径中加入相关的依赖。</p>
+<p>如果你使用 Maven,那么在 pom.xml 中加入下面的代码即可:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">  &lt;groupId&gt;org.mybatis&lt;/groupId&gt;</div><div class="line">  &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;</div><div class="line">  &lt;version&gt;x.x.x&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><h5 id="Spring-XML配置"><a href="#Spring-XML配置" class="headerlink" title="Spring XML配置"></a>Spring XML配置</h5><p>1.dataSource</p>
+<p>配置数据源，此处我们使用dbcp2数据源</p>
+<p>2.SqlSessionFactoryBean</p>
+<ul>
+<li>用来集成Mybatis,它会创建SqlSessionFactory，SqlSessionFactory需要一个DataSource </li>
+<li><code>configLocation</code>用来指定Mybatis的配置文件路径及名称</li>
+<li><code>mapperLocations</code>用来指定Mybatis的XML映射文件</li>
+</ul>
+<p>新建orm_test.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</div><div class="line">	xmlns:context=&quot;http://www.springframework.org/schema/context&quot; xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</div><div class="line">	xsi:schemaLocation=&quot;</div><div class="line">		http://www.springframework.org/schema/beans</div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd</div><div class="line">		http://www.springframework.org/schema/context</div><div class="line">		http://www.springframework.org/schema/context/spring-context-4.0.xsd</div><div class="line">		http://www.springframework.org/schema/tx</div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd</div><div class="line">	    http://www.springframework.org/schema/aop </div><div class="line">        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd&quot;&gt;</div><div class="line">       	&lt;!-- 读取配置文件 --&gt;</div><div class="line">        &lt;context:property-placeholder location=&quot;database.properties&quot;/&gt;</div><div class="line">        </div><div class="line">        &lt;!-- 配置数据源 --&gt;</div><div class="line">        &lt;bean id=&quot;dataSource&quot; class=&quot;org.apache.commons.dbcp2.BasicDataSource&quot;  </div><div class="line">	    destroy-method=&quot;close&quot;&gt;  </div><div class="line">		    &lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;jdbc.driver&#125;&quot; /&gt;  </div><div class="line">		    &lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc.url&#125;&quot; /&gt;  </div><div class="line">		    &lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc.username&#125;&quot; /&gt;  </div><div class="line">		    &lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc.password&#125;&quot; /&gt;  </div><div class="line">		&lt;/bean&gt;</div><div class="line"> 	 	</div><div class="line"> 	 	&lt;!-- 在基本的 MyBatis 中,session 工厂可以使用 SqlSessionFactoryBuilder 来创建。而在 MyBatis-Spring 中,则使用 SqlSessionFactoryBean 来替代 --&gt;</div><div class="line"> 	 	&lt;!-- sqlSessionFactory配置 --&gt;	 </div><div class="line"> 	 	&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</div><div class="line"> 	 		&lt;!-- 指定数据源 --&gt;</div><div class="line">	 	 	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</div><div class="line">	 	 	&lt;!-- 指定mybatis配置文件 --&gt;</div><div class="line">			&lt;property name=&quot;configLocation&quot; value=&quot;classpath:configuration.xml&quot;/&gt; </div><div class="line">			&lt;property name=&quot;mapperLocations&quot; value=&quot;classpath*:com/szl/springorm/dao/impl/*.xml&quot;&gt;&lt;/property&gt;</div><div class="line"> 	 	&lt;/bean&gt;</div><div class="line">&lt;beans&gt;</div></pre></td></tr></table></figure></p>
+<h5 id="Mybatis-XML配置"><a href="#Mybatis-XML配置" class="headerlink" title="Mybatis XML配置"></a>Mybatis XML配置</h5><p>新建configuration.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;!DOCTYPE configuration PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot; </div><div class="line">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</div><div class="line"></div><div class="line">&lt;configuration&gt;</div><div class="line">	&lt;settings&gt;  </div><div class="line">        &lt;setting name=&quot;cacheEnabled&quot; value=&quot;false&quot;/&gt;  </div><div class="line">    &lt;/settings&gt;  </div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<p><a href="http://www.mybatis.org/mybatis-3/zh/configuration.html" target="_blank" rel="external">更多详细配置介绍,点击进入官网</a></p>
+<h5 id="Mybatis-映射文件配置"><a href="#Mybatis-映射文件配置" class="headerlink" title="Mybatis 映射文件配置"></a>Mybatis 映射文件配置</h5><ul>
+<li><p>DAO接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public interface UserDao &#123;</div><div class="line">	/**</div><div class="line">	 * 增加用户</div><div class="line">	 * @return</div><div class="line">	 */</div><div class="line">	int addUser(User user);</div><div class="line">	</div><div class="line">	/**</div><div class="line">	 * 查询用户</div><div class="line">	 * @return</div><div class="line">	 */</div><div class="line">	List&lt;Map&lt;String, Object&gt;&gt; queryUser();</div><div class="line">	</div><div class="line">	/**</div><div class="line">	 * 删除用户</div><div class="line">	 * @return</div><div class="line">	 */</div><div class="line">	int delUserById(Long id);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>映射XML文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</div><div class="line">&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot; &gt;</div><div class="line">&lt;!-- 命名空间,指向DAO接口 --&gt;</div><div class="line">&lt;mapper namespace=&quot;com.szl.springorm.dao.UserDao&quot; &gt;</div><div class="line"> </div><div class="line"> &lt;!-- 查询用户 --&gt;</div><div class="line"> &lt;select id=&quot;queryUser&quot; resultType=&quot;java.util.Map&quot;&gt;</div><div class="line"> 	select * from t_users</div><div class="line"> &lt;/select&gt;</div><div class="line"> </div><div class="line"> &lt;!-- 新增用户 --&gt;</div><div class="line"> &lt;insert id=&quot;addUser&quot; parameterType=&quot;com.szl.springorm.model.User&quot;&gt;</div><div class="line"> 	INSERT INTO t_users(name,email)VALUES(#&#123;user.name&#125;,#&#123;user.email&#125;)</div><div class="line"> &lt;/insert&gt;</div><div class="line"> </div><div class="line"> &lt;!-- 删除用户 --&gt;</div><div class="line"> &lt;delete id=&quot;delUserById&quot; parameterType=&quot;java.lang.Long&quot;&gt;</div><div class="line"> 	delete from t_users where id=#&#123;id&#125;</div><div class="line"> &lt;/delete&gt;</div><div class="line"> </div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><a href="http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html" target="_blank" rel="external">更多映射文件配置介绍,点击进入官网</a></p>
+<h5 id="测试一下"><a href="#测试一下" class="headerlink" title="测试一下"></a>测试一下</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public class SpringOrmTest &#123;</div><div class="line">	</div><div class="line">	private ApplicationContext ac;</div><div class="line">	</div><div class="line">	@Before</div><div class="line">	public void init() &#123;</div><div class="line">		ac = new ClassPathXmlApplicationContext(&quot;orm_test.xml&quot;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	/**</div><div class="line">	 * 使用SqlSession进行数据库操作</div><div class="line">	 * @author SongZhangLiang</div><div class="line">	 */</div><div class="line">	@Test</div><div class="line">	public void testSqlSession() &#123;</div><div class="line">		/**</div><div class="line">		 * 直接使用SqlSession进行数据库操作（使用指定的完全限定名“com.szl.springorm.dao.UserDao.queryUser”来调用映射语句）</div><div class="line">		 */</div><div class="line">		SqlSession ss = null;</div><div class="line">		try &#123;</div><div class="line">			SqlSessionFactory ssf = ac.getBean(&quot;sqlSessionFactory&quot;,SqlSessionFactory.class);</div><div class="line">			ss = ssf.openSession();</div><div class="line">			List&lt;Map&lt;String, Object&gt;&gt; selectList = ss.selectList(&quot;com.szl.springorm.dao.UserDao.queryUser&quot;);</div><div class="line">			System.out.println(&quot;testSqlSession:&quot;+selectList.toString());</div><div class="line">			ss.commit();</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			//异常回滚</div><div class="line">			System.out.println(&quot;异常：&quot;+e);</div><div class="line">			ss.rollback();</div><div class="line">		&#125;</div><div class="line">		finally &#123;</div><div class="line">			if(null != ss)</div><div class="line">				ss.close();</div><div class="line">		&#125;</div><div class="line">		/**</div><div class="line">		 * 直接使用SqlSession进行数据库操作（使用Mapper 接口）</div><div class="line">		 */</div><div class="line">//		UserDao mapper = ss.getMapper(UserDao.class);</div><div class="line">//		System.out.println(&quot;mapper:&quot;+mapper.queryUser().toString());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><blockquote>
+<p>使用SqlSessionFactory来创建 SqlSession。一旦你获得一个session之后,你可以使用它来执行映射语句,提交或回滚连接,最后,当不再需要它的时候, 你可以关闭session</p>
+</blockquote>
+<p>这样操作依旧繁琐，MyBatis-Spring提供了SqlSessionTemplate，qlSessionTemplate是 MyBatis-Spring 的核心。 这个类负责管理 MyBatis的SqlSession,调用MyBatis的SQL方法, 翻译异常。<br>SqlSessionTemplate 是线程安全的, 可以被多个 DAO 所共享使用。</p>
+<h3 id="使用SqlSessionTemplate"><a href="#使用SqlSessionTemplate" class="headerlink" title="使用SqlSessionTemplate"></a>使用SqlSessionTemplate</h3><h4 id="Spring-XMl配置"><a href="#Spring-XMl配置" class="headerlink" title="Spring XMl配置"></a>Spring XMl配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</div><div class="line">  	&lt;!-- 指定数据源 --&gt;</div><div class="line">  	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</div><div class="line">  	&lt;!-- 指定mybatis配置文件 --&gt;</div><div class="line">	&lt;property name=&quot;configLocation&quot; value=&quot;classpath:configuration.xml&quot;/&gt; </div><div class="line">	&lt;property name=&quot;mapperLocations&quot; value=&quot;classpath*:com/szl/springorm/dao/impl/*.xml&quot;&gt;&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line">  	</div><div class="line">&lt;!-- 1.使用sqlSessionTemplate,注入sqlSessionFactory --&gt;</div><div class="line">&lt;bean id=&quot;sqlSessionTemplate&quot; class=&quot;org.mybatis.spring.SqlSessionTemplate&quot;&gt;</div><div class="line">  &lt;constructor-arg name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot;&gt;&lt;/constructor-arg&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h4 id="测试一下-1"><a href="#测试一下-1" class="headerlink" title="测试一下"></a>测试一下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 使用SqlSessionTemplate进行数据库操作</div><div class="line"> * SqlSessionTemplate 是 MyBatis-Spring 的核心。</div><div class="line"> * 这个类负责管理 MyBatis 的 SqlSession, 调用 MyBatis 的 SQL 方法, 翻译异常。 SqlSessionTemplate       是线程安全的, 可以被多个 DAO 所共享使用</div><div class="line"> */</div><div class="line">@Test</div><div class="line">public void testSqlSessionTemplate()&#123;</div><div class="line">	SqlSession ss = ac.getBean(&quot;sqlSessionTemplate&quot;,SqlSession.class);</div><div class="line">	List&lt;Map&lt;String, Object&gt;&gt; selectList = ss.selectList(&quot;com.szl.springorm.dao.UserDao.queryUser&quot;);</div><div class="line">	System.out.println(&quot;testSqlSessionTemplate:&quot;+selectList.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="使用sqlSessionDaoSupport"><a href="#使用sqlSessionDaoSupport" class="headerlink" title="使用sqlSessionDaoSupport"></a>使用sqlSessionDaoSupport</h3><p>SqlSessionDaoSupport是一个抽象的支持类, 用来提供 SqlSession 。调用getSqlSession()方法会得到一个 SqlSessionTemplate,之后可以用于执行SQL方法</p>
+<h4 id="DAO的实现"><a href="#DAO的实现" class="headerlink" title="DAO的实现"></a>DAO的实现</h4><p><strong>使用SqlSessionDaoSupport的方法，需要编写DAO的实现类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * </div><div class="line"> * SqlSessionDaoSupport 是 一 个 抽象 的支 持 类, 提供 SqlSession.</div><div class="line"> * 调 用 getSqlSession()方法你会得到一个 SqlSessionTemplate,之后可以用于执行 SQL 方法</div><div class="line"> * </div><div class="line"> * 使用SqlSessionDaoSupport的方法，需要编写DAO的实现类</div><div class="line"> * @author SongZhangLiang</div><div class="line"> */</div><div class="line">public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public int addUser(User user) &#123;</div><div class="line">		return this.getSqlSession().insert(&quot;com.szl.springorm.dao.UserDao.addUser&quot;, user);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public List&lt;Map&lt;String, Object&gt;&gt; queryUser() &#123;</div><div class="line">		return this.getSqlSession().selectList(&quot;com.szl.springorm.dao.UserDao.queryUser&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public int delUserById(Long id) &#123;</div><div class="line">		return this.getSqlSession().delete(&quot;com.szl.springorm.dao.UserDao.delUserById&quot;,id);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Spring-XML配置-1"><a href="#Spring-XML配置-1" class="headerlink" title="Spring XML配置"></a>Spring XML配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</div><div class="line">  &lt;!-- 指定数据源 --&gt;</div><div class="line">  &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</div><div class="line">  &lt;!-- 指定mybatis配置文件 --&gt;</div><div class="line">&lt;property name=&quot;configLocation&quot; value=&quot;classpath:configuration.xml&quot;/&gt; </div><div class="line">&lt;property name=&quot;mapperLocations&quot; value=&quot;classpath*:com/szl/springorm/dao/impl/*.xml&quot;&gt;&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 2.使用sqlSessionDaoSupport,注入sqlSessionFactory--&gt;</div><div class="line">&lt;bean id=&quot;userDaoImpl&quot; class=&quot;com.szl.springorm.dao.impl.UserDaoImpl&quot;&gt;</div><div class="line">  &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h4 id="测试一下-2"><a href="#测试一下-2" class="headerlink" title="测试一下"></a>测试一下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 使用SqlSessionDaoSupport进行数据库操作</div><div class="line"> * DAO的实现类必须要继承SqlSessionDaoSupport</div><div class="line"> * @author SongZhangLiang</div><div class="line"> */</div><div class="line">@Test</div><div class="line">public void testSqlSessionDaoSupport()&#123;</div><div class="line">	UserDaoImpl userDaoImpl = ac.getBean(&quot;userDaoImpl&quot;,UserDaoImpl.class);</div><div class="line">	List&lt;Map&lt;String, Object&gt;&gt; queryUser = userDaoImpl.queryUser();</div><div class="line">	System.out.println(&quot;testSqlSessionDaoSupport:&quot;+queryUser.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="使用MapperFactoryBean动态代理"><a href="#使用MapperFactoryBean动态代理" class="headerlink" title="使用MapperFactoryBean动态代理"></a>使用MapperFactoryBean动态代理</h3><p>为了代替手工使用 SqlSessionDaoSupport 或 SqlSessionTemplate 编写数据访问对象 (DAO)的代码，MyBatis-Spring 提供了一个动态代理的实现:MapperFactoryBean</p>
+<h4 id="编写DAO"><a href="#编写DAO" class="headerlink" title="编写DAO"></a>编写DAO</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public interface UserDao1 &#123;</div><div class="line">/**</div><div class="line"> * 增加用户</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">int addUser(User user);</div><div class="line"></div><div class="line">/**</div><div class="line"> * 查询用户</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">List&lt;Map&lt;String, Object&gt;&gt; queryUser();</div><div class="line"></div><div class="line">/**</div><div class="line"> * 删除用户</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">int delUserById(Long id);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="编写Service实现类"><a href="#编写Service实现类" class="headerlink" title="编写Service实现类"></a>编写Service实现类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class UserServiceImpl implements UserService &#123;</div><div class="line">	</div><div class="line"></div><div class="line">	private UserDao1 userDao1;</div><div class="line">	</div><div class="line">    //增加set方法,方便注入</div><div class="line">	public void setUserDao1(UserDao1 userDao1) &#123;</div><div class="line">		this.userDao1 = userDao1;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public int addUser(User user) &#123;</div><div class="line">		return userDao1.addUser(user);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public List&lt;Map&lt;String, Object&gt;&gt; queryUser() &#123;</div><div class="line">		return userDao1.queryUser();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public int delUserById(Long id) &#123;</div><div class="line">		return userDao1.delUserById(id);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h4 id="Spring-XML配置-2"><a href="#Spring-XML配置-2" class="headerlink" title="Spring XML配置"></a>Spring XML配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 1.注册MapperFactoryBean --&gt;	</div><div class="line">&lt;bean id=&quot;userDao1&quot; class=&quot;org.mybatis.spring.mapper.MapperFactoryBean&quot;&gt;</div><div class="line">  &lt;!-- 注册映射器,也就是DAO接口 --&gt;</div><div class="line">  &lt;property name=&quot;mapperInterface&quot; value=&quot;com.szl.springorm.dao.UserDao1&quot;&gt;&lt;/property&gt;</div><div class="line">  &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line">&lt;!-- 2.service中直接注入userDao --&gt; 	 	</div><div class="line">&lt;bean id=&quot;userServiceImpl&quot; class=&quot;com.szl.springorm.service.impl.UserServiceImpl&quot;&gt;</div><div class="line">  &lt;property name=&quot;userDao1&quot; ref=&quot;userDao1&quot;&gt;&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h4 id="测试一下-3"><a href="#测试一下-3" class="headerlink" title="测试一下"></a>测试一下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 使用MapperFactoryBean代理</div><div class="line"> * 注意在这段代码中没有 SqlSession 或 MyBatis 的引用。也没有任何需要创建,打开或 关闭 session 的代码,MyBatis-Spring 会来关心它的。</div><div class="line"> * @author SongZhangLiang</div><div class="line"> */</div><div class="line">@Test</div><div class="line">public void testMapperFactoryBean()&#123;</div><div class="line">	UserServiceImpl userDaoImpl = ac.getBean(&quot;userServiceImpl&quot;,UserServiceImpl.class);</div><div class="line">	List&lt;Map&lt;String, Object&gt;&gt; queryUser = userDaoImpl.queryUser();</div><div class="line">	System.out.println(&quot;testMapperFactoryBean:&quot;+queryUser.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>如果有大量的映射文件，那么就需要在XML中配置大量的MapperFactoryBean，这样XML会非常的臃肿，为此MyBatis-Spring提供了MapperScannerConfigurer， 它将会查找类路径下的映射器并自动将它们创建成MapperFactoryBean。</p>
+<p>配置如下：</p>
+<blockquote>
+<p>basePackage 属性是让你为映射器接口文件设置基本的包路径。 你可以使用分号或逗号 作为分隔符设置多于一个的包路径。每个映射器将会在指定的包路径中递归地被搜索到。<br>MapperScannerConfigurer 属性不支持使用了 PropertyPlaceholderConfigurer 的属 性替换,因为会在 Spring 其中之前来它加载。但是,你可以使用 PropertiesFactoryBean 和 SpEL 表达式来作为替代。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;</div><div class="line">  &lt;!--basePackage属性是为映射器接口文件设置基本的包路径,也就是DAO的包--&gt;</div><div class="line">  &lt;property name=&quot;basePackage&quot; value=&quot;com.szl.springorm.dao&quot;&gt;&lt;/property&gt;</div><div class="line">  &lt;!-- 一个数据源，可以不配置sqlSessionFactory --&gt;</div><div class="line">  &lt;!-- &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt; --&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/31/编程/spring/第五篇之Spring JDBC/" rel="prev" title="第五篇之Spring JDBC">
+                第五篇之Spring JDBC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Andrew Song" />
+          <p class="site-author-name" itemprop="name">Andrew Song</p>
+           
+              <p class="site-description motion-element" itemprop="description">只要开始,就不晚!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.cnblogs.com/" title="CNBLOG" target="_blank">CNBLOG</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM是什么"><span class="nav-number">1.</span> <span class="nav-text">ORM是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring对ORM的支持"><span class="nav-number">2.</span> <span class="nav-text">Spring对ORM的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一致的异常体系结构"><span class="nav-number">2.1.</span> <span class="nav-text">一致的异常体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致的DAO抽象支持"><span class="nav-number">2.2.</span> <span class="nav-text">一致的DAO抽象支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring事务管理"><span class="nav-number">2.3.</span> <span class="nav-text">Spring事务管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring集成Mybatis"><span class="nav-number">3.</span> <span class="nav-text">Spring集成Mybatis?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis介绍"><span class="nav-number">3.1.</span> <span class="nav-text">Mybatis介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何集成"><span class="nav-number">3.2.</span> <span class="nav-text">如何集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单介绍"><span class="nav-number">3.2.1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">3.2.2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-XML配置"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">Spring XML配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mybatis-XML配置"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">Mybatis XML配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mybatis-映射文件配置"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">Mybatis 映射文件配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试一下"><span class="nav-number">3.2.2.4.</span> <span class="nav-text">测试一下</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结"><span class="nav-number">3.2.2.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SqlSessionTemplate"><span class="nav-number">3.3.</span> <span class="nav-text">使用SqlSessionTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-XMl配置"><span class="nav-number">3.3.1.</span> <span class="nav-text">Spring XMl配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试一下-1"><span class="nav-number">3.3.2.</span> <span class="nav-text">测试一下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用sqlSessionDaoSupport"><span class="nav-number">3.4.</span> <span class="nav-text">使用sqlSessionDaoSupport</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DAO的实现"><span class="nav-number">3.4.1.</span> <span class="nav-text">DAO的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-XML配置-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">Spring XML配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试一下-2"><span class="nav-number">3.4.3.</span> <span class="nav-text">测试一下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MapperFactoryBean动态代理"><span class="nav-number">3.5.</span> <span class="nav-text">使用MapperFactoryBean动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写DAO"><span class="nav-number">3.5.1.</span> <span class="nav-text">编写DAO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写Service实现类"><span class="nav-number">3.5.2.</span> <span class="nav-text">编写Service实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-XML配置-2"><span class="nav-number">3.5.3.</span> <span class="nav-text">Spring XML配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试一下-3"><span class="nav-number">3.5.4.</span> <span class="nav-text">测试一下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结-1"><span class="nav-number">3.5.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andrew Song</span>
+</div>
+
+<!-- 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+ -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "a65e94b0556544308ae1a6ec892f9609",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
