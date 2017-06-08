@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="燕良山好汉的博客">
 <meta property="og:description" content="数据库事务概念 数据库事务(Database Transaction) ，是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。  相关属性   名称 解释     原子性(Atomicity) 事务必须是原子工作单元。对于其数据修改，要么全都执行，要么全都不执行   一致性(Consistency) 事务在完成时，必须使所有的数据都保持一致状态   隔离性(Isolatio">
 <meta property="og:image" content="http://www.ddyc.vip/images/spring/1/spring_transaction.jpg">
-<meta property="og:updated_time" content="2017-06-07T10:43:23.657Z">
+<meta property="og:updated_time" content="2017-06-08T02:02:02.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第七篇之Spring Transaction">
 <meta name="twitter:description" content="数据库事务概念 数据库事务(Database Transaction) ，是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。  相关属性   名称 解释     原子性(Atomicity) 事务必须是原子工作单元。对于其数据修改，要么全都执行，要么全都不执行   一致性(Consistency) 事务在完成时，必须使所有的数据都保持一致状态   隔离性(Isolatio">
@@ -422,7 +422,33 @@
 </tr>
 </tbody>
 </table>
-<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>在数据库操作中，为了有效保证并发读取数据的正确性，提出的事务隔离级别。<br>名称|解释<br>—|—<br>未提交读(Read Uncommitted)|最低隔离级别，一个事务能读取到别的事务未提交的更新数据，很不安全，可能出现丢失更新、脏读、不可重复读、幻读<br>提交读(Read Committed)|一个事务能读取到别的事务提交的更新数据，不能看到未提交的更新数据，不可能出现丢失更新、脏读，但可能出现不可重复读、幻读<br>可重复读(Repeatable Read)|保证同一事务中先后执行的多次查询将返回同一结果，不受其他事务影响，不可能出现丢失更新、脏读、不可重复读，但可能出现幻读<br>序列化(Serializable)|最高隔离级别，不允许事务并发执行，而必须串行化执行，最安全，不可能出现更新、脏读、不可重复读、幻读</p>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>在数据库操作中，为了有效保证并发读取数据的正确性，提出的事务隔离级别。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读(Read Uncommitted)</td>
+<td>最低隔离级别，一个事务能读取到别的事务未提交的更新数据，很不安全，可能出现丢失更新、脏读、不可重复读、幻读</td>
+</tr>
+<tr>
+<td>提交读(Read Committed)</td>
+<td>一个事务能读取到别的事务提交的更新数据，不能看到未提交的更新数据，不可能出现丢失更新、脏读，但可能出现不可重复读、幻读</td>
+</tr>
+<tr>
+<td>可重复读(Repeatable Read)</td>
+<td>保证同一事务中先后执行的多次查询将返回同一结果，不受其他事务影响，不可能出现丢失更新、脏读、不可重复读，但可能出现幻读</td>
+</tr>
+<tr>
+<td>序列化(Serializable)</td>
+<td>最高隔离级别，不允许事务并发执行，而必须串行化执行，最安全，不可能出现更新、脏读、不可重复读、幻读</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed。它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读和第二类丢失更新这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。</p>
 </blockquote>
