@@ -172,7 +172,7 @@ global session|仅在Protlet的WEB应用中使用，同一个全局会话共享�
 
 3.ApplicationContext接口继承了HierarchicalBeanFactory和ListableBeanFactory，所以ApplicationContext包含BeanFactory的所有功能，而已在国际化支持、资源访问（如URL和文件）、事件传播等方面进行了良好的支持。
 
-4.shilihuaApplicationContext的常用实现类
+4.实例化ApplicationContext的常用实现类
 - ClassPathXmlApplicationContext  
 从类路径ClassPath中寻找指定的XML配置文件，找到并装载完成ApplicationContext的实例化工作。
 - FileSystemXmlApplicationContext  
