@@ -1,0 +1,840 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Spring Web框架Spring提供了自己的Web框架（Spring MVC），也可以方便集成其他第三方WEB框架，比如Status2等;首先我们来看一下Spring配置，该配置不是特定于任何一个Web框架的，下面以集成SpringMVC框架为列来进行介绍 新建WEB工程 Sping通用配置WEB.XML配置web.xml初始化配置123456&amp;lt;?xml version=&amp;quot;1.">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八篇之Spirng WEB">
+<meta property="og:url" content="http://www.ddyc.vip/2017/06/15/编程/spring/第八篇之Spirng WEB/index.html">
+<meta property="og:site_name" content="燕良山好汉的博客">
+<meta property="og:description" content="Spring Web框架Spring提供了自己的Web框架（Spring MVC），也可以方便集成其他第三方WEB框架，比如Status2等;首先我们来看一下Spring配置，该配置不是特定于任何一个Web框架的，下面以集成SpringMVC框架为列来进行介绍 新建WEB工程 Sping通用配置WEB.XML配置web.xml初始化配置123456&amp;lt;?xml version=&amp;quot;1.">
+<meta property="og:image" content="http://www.ddyc.vip/images/spring/1/spring_web1.jpg">
+<meta property="og:image" content="http://www.ddyc.vip/images/spring/1/mvcurl.jpg">
+<meta property="og:updated_time" content="2017-06-26T09:05:03.519Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第八篇之Spirng WEB">
+<meta name="twitter:description" content="Spring Web框架Spring提供了自己的Web框架（Spring MVC），也可以方便集成其他第三方WEB框架，比如Status2等;首先我们来看一下Spring配置，该配置不是特定于任何一个Web框架的，下面以集成SpringMVC框架为列来进行介绍 新建WEB工程 Sping通用配置WEB.XML配置web.xml初始化配置123456&amp;lt;?xml version=&amp;quot;1.">
+<meta name="twitter:image" content="http://www.ddyc.vip/images/spring/1/spring_web1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ddyc.vip/2017/06/15/编程/spring/第八篇之Spirng WEB/"/>
+
+
+
+
+
+  <title>第八篇之Spirng WEB | 燕良山好汉的博客</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0de31a9b94e2d0af07ff23b34a742643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">燕良山好汉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.ddyc.vip/2017/06/15/编程/spring/第八篇之Spirng WEB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Andrew Song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="燕良山好汉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                第八篇之Spirng WEB
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T10:25:00+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring的那点事/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring的那点事</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/06/15/编程/spring/第八篇之Spirng WEB/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Web框架"><a href="#Spring-Web框架" class="headerlink" title="Spring Web框架"></a>Spring Web框架</h3><p>Spring提供了自己的Web框架（Spring MVC），也可以方便集成其他第三方WEB框架，比如Status2等;<br>首先我们来看一下Spring配置，该配置不是特定于任何一个Web框架的，下面以集成SpringMVC框架为列来进行介绍</p>
+<h3 id="新建WEB工程"><a href="#新建WEB工程" class="headerlink" title="新建WEB工程"></a>新建WEB工程</h3><p><img src="\images\spring\1\spring_web1.jpg" alt="image"></p>
+<h3 id="Sping通用配置"><a href="#Sping通用配置" class="headerlink" title="Sping通用配置"></a>Sping通用配置</h3><h4 id="WEB-XML配置"><a href="#WEB-XML配置" class="headerlink" title="WEB.XML配置"></a>WEB.XML配置</h4><h5 id="web-xml初始化配置"><a href="#web-xml初始化配置" class="headerlink" title="web.xml初始化配置"></a>web.xml初始化配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;web-app xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">	xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;</div><div class="line">	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</div><div class="line">	version=&quot;3.0&quot;&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
+<p><code>&lt;web-app version=&quot;3.0&quot;&gt;</code>表示采用Servlet 3.0规范的Web程序部署描述格式</p>
+<h5 id="指定Web应用上下文实现"><a href="#指定Web应用上下文实现" class="headerlink" title="指定Web应用上下文实现"></a>指定Web应用上下文实现</h5><blockquote>
+<p>在Web环境中，Spring提供WebApplicationContext（继承ApplicationContext）接口用于配置Web应用，该接口应该被实现为在Web应用程序运行时只读，即在初始化完毕后不能修改Spring Web容器（WebApplicationContext），但可能支持重载。<br>Spring提供XmlWebApplicationContext实现，并在Web应用程序中默认使用该实现，可以通过在web.xml配置文件中使用如下方式指定：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 指定Sping容器的实现 --&gt;</div><div class="line">&lt;context-param&gt;</div><div class="line">	&lt;param-name&gt;contextClass&lt;/param-name&gt;</div><div class="line">	&lt;param-value&gt;  </div><div class="line">   		org.springframework.web.context.support.XmlWebApplicationContext  </div><div class="line">	&lt;/param-value&gt;</div><div class="line">&lt;/context-param&gt;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如上指定是可选的，只有当使用其他实现时才需要显示指定。</p>
+</blockquote>
+<p><strong>容器的实现可以参看第二篇Spring IOC</strong></p>
+<h5 id="指定Spring配置文件"><a href="#指定Spring配置文件" class="headerlink" title="指定Spring配置文件"></a>指定Spring配置文件</h5><p>容器默认情况下将加载/WEB-INF/applicationContext.xml配置文件，也可以使用如下形式在web.xml中定义要加载自定义的配置文件，多个配置文件用“,”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;!--  指定Spring加载文件位置 --&gt;</div><div class="line">&lt;context-param&gt;</div><div class="line">	&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div><div class="line">	&lt;param-value&gt;classpath:applicationContext.xml&lt;/param-value&gt;</div><div class="line">&lt;/context-param&gt;</div></pre></td></tr></table></figure>
+<h5 id="加载和关闭Spring-Web容器"><a href="#加载和关闭Spring-Web容器" class="headerlink" title="加载和关闭Spring Web容器"></a>加载和关闭Spring Web容器</h5><p>Spring使用ContextLoaderListener监听器来加载和关闭Spring Web容器，即使用如下方式在web.xml中指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- Spring 监听器 --&gt;</div><div class="line">&lt;listener&gt;</div><div class="line">	&lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;</div><div class="line">&lt;/listener&gt;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>ContextLoaderListener监听器将在Web应用启动时使用指定的配置文件初始化Spring Web容器，在Web应用关闭时销毁Spring Web容器</p>
+</blockquote>
+<h5 id="在Web环境中获取Spring-Web容器"><a href="#在Web环境中获取Spring-Web容器" class="headerlink" title="在Web环境中获取Spring Web容器"></a>在Web环境中获取Spring Web容器</h5><ul>
+<li>使用 WebApplicationContextUtils</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">WebApplicationContextUtils.getWebApplicationContext(servletContext);  </div><div class="line">或  </div><div class="line">WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);</div></pre></td></tr></table></figure>
+<p>如果当前Web应用中的ServletContext 中没有相应的Spring Web容器，对于getWebApplicationContext()方法将返回null,而getRequiredWebApplicationContext()方法将抛出异常</p>
+<ul>
+<li>使用 ApplicationContextAware</li>
+</ul>
+<h6 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">package com.szl.springweb.util;</div><div class="line"></div><div class="line">import org.springframework.beans.BeansException;</div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.ApplicationContextAware;</div><div class="line"></div><div class="line">public class ApplicationContextUtil implements ApplicationContextAware &#123;</div><div class="line">	</div><div class="line">	private static ApplicationContext applicationContext;</div><div class="line">	</div><div class="line">	private ApplicationContextUtil() &#123;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void setApplicationContext(ApplicationContext applicationContext)</div><div class="line">			throws BeansException &#123;</div><div class="line">		ApplicationContextUtil.applicationContext = applicationContext;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static ApplicationContext getApplicationContext()&#123;</div><div class="line">		return applicationContext;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * </div><div class="line"> * 测试从ApplicationContextAware中获取上下文bean</div><div class="line"> */</div><div class="line">@Test</div><div class="line">public void testApplicationContextAware()&#123;</div><div class="line">	UserServiceImpl userDaoImpl = ApplicationContextUtil.getApplicationContext().getBean(&quot;userServiceImpl&quot;,UserServiceImpl.class);</div><div class="line">	List&lt;Map&lt;String, Object&gt;&gt; queryUser = userDaoImpl.queryUser();</div><div class="line">	System.out.println(&quot;SpringWeb:&quot;+queryUser.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>只要类实现ApplicationContextAware 接口即可，这样就可获取上下文中所有bean。</p>
+<h3 id="集成SpingMVC"><a href="#集成SpingMVC" class="headerlink" title="集成SpingMVC"></a>集成SpingMVC</h3><h4 id="WEB-XML配置-1"><a href="#WEB-XML配置-1" class="headerlink" title="WEB.XML配置"></a>WEB.XML配置</h4><p>Spring提供的前端控制器（DispatcherServlet），所有的请求都有经过它来统一分发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;!-- Sping MVC配置 --&gt;</div><div class="line">&lt;servlet&gt;</div><div class="line">	&lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;</div><div class="line">	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">	&lt;!-- 指定SpingMVC的配置文件 --&gt;</div><div class="line">	&lt;init-param&gt;</div><div class="line">		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div><div class="line">		&lt;param-value&gt;classpath*:dispatcher_servlet.xml&lt;/param-value&gt;</div><div class="line">	&lt;/init-param&gt;</div><div class="line">	&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</div><div class="line">&lt;/servlet&gt;</div><div class="line"></div><div class="line">&lt;servlet-mapping&gt;</div><div class="line">	&lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;</div><div class="line">	&lt;url-pattern&gt;/&lt;/url-pattern&gt;</div><div class="line">&lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
+<h4 id="dispatcher-servlet-xml配置"><a href="#dispatcher-servlet-xml配置" class="headerlink" title="dispatcher_servlet.xml配置"></a>dispatcher_servlet.xml配置</h4><p>这个是指SpringMVC的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 扫描Controller所在的包 --&gt;</div><div class="line">&lt;context:component-scan base-package=&quot;com.szl.springweb.controller&quot;&gt;</div><div class="line">	&lt;!-- 如果扫描的是所有的包,需要以下配置,排除Service --&gt;</div><div class="line">	&lt;!-- &lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</div><div class="line">	&lt;context:exclude-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Service&quot;/&gt; --&gt;</div><div class="line">&lt;/context:component-scan&gt;</div><div class="line"></div><div class="line">&lt;!-- 相当于注册RequestMappingHandlerMapping和RequestMappingHandlerAdapter --&gt;</div><div class="line">&lt;mvc:annotation-driven/&gt;</div><div class="line"></div><div class="line">&lt;!-- 定义跳转的文件的前后缀 ，视图模式配置--&gt;</div><div class="line">&lt;bean id=&quot;viewResolver&quot; class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;</div><div class="line">	&lt;!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 --&gt;</div><div class="line">	&lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot; /&gt;</div><div class="line">	&lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h4 id="Controller代码"><a href="#Controller代码" class="headerlink" title="Controller代码"></a>Controller代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Controller</div><div class="line">public class UserController &#123;</div><div class="line">	</div><div class="line">    @Autowired</div><div class="line">    @Qualifier(value=&quot;userServiceImpl&quot;)</div><div class="line">    private UserService UserService;</div><div class="line">    </div><div class="line">    @RequestMapping(value = &quot;queryUser&quot;,produces=&quot;application/json; charset=UTF-8&quot;)</div><div class="line">    @ResponseBody</div><div class="line">    public String queryUserList()&#123;</div><div class="line">    	List&lt;Map&lt;String, Object&gt;&gt; queryUser = UserService.queryUser();</div><div class="line">    	System.out.println(queryUser.toString());</div><div class="line">    	return JSONObject.toJSONString(queryUser);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="启动tomcat-访问controller"><a href="#启动tomcat-访问controller" class="headerlink" title="启动tomcat,访问controller"></a>启动tomcat,访问controller</h4><p><img src="\images\spring\1\mvcurl.jpg" alt="image"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>1.此处只是简单的整合SpirngMVC,返回JSON数据;</p>
+<p>2.SpringMVC的详细功能介绍可以参看<a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc" target="_blank" rel="external">官网</a></p>
+<h3 id="异常总结"><a href="#异常总结" class="headerlink" title="异常总结"></a>异常总结</h3><p>我们在UserController代码中只用了 <code>@Qualifier(value=&quot;userServiceImpl&quot;)</code>，因为<code>@Autowired</code>默认根据类型自动装配，如果当Spring上下文中存在不止一个userServiceImpl类型的bean时，就会抛出BeanCreationException异常，见以下异常代码，所以我们需要使用<code>@Qualifier</code>来配合指定具体的Bean。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type [com.szl.springorm.service.UserService] is defined: expected single matching bean but found 2: userServiceImpl,userServiceImpl1</div><div class="line">	org.springframework.beans.factory.config.DependencyDescriptor.resolveNotUnique(DependencyDescriptor.java:172)</div><div class="line">	org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1065)</div><div class="line">	org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1019)</div><div class="line">	org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:566)</div><div class="line">	org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)</div><div class="line">	org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:349)</div><div class="line">	org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1214)</div><div class="line">	org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:543)</div><div class="line">	org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)</div><div class="line">	org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)</div><div class="line">	org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)</div><div class="line">	org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)</div><div class="line">	org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)</div><div class="line">	org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:776)</div><div class="line">	org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:861)</div><div class="line">	org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)</div><div class="line">	org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)</div><div class="line">	org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:634)</div><div class="line">	org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:682)</div><div class="line">	org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:553)</div><div class="line">	org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)</div><div class="line">	org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136)</div><div class="line">	javax.servlet.GenericServlet.init(GenericServlet.java:158)</div><div class="line">	org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)</div><div class="line">	org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)</div><div class="line">	org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:616)</div><div class="line">	org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:509)</div><div class="line">	org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1104)</div><div class="line">	org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:684)</div><div class="line">	org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1520)</div><div class="line">	org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1476)</div><div class="line">	java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)</div><div class="line">	java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</div><div class="line">	org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)</div><div class="line">	java.lang.Thread.run(Thread.java:745)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/07/编程/spring/第七篇之Spring Transaction/" rel="prev" title="第七篇之Spring Transaction">
+                第七篇之Spring Transaction <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Andrew Song" />
+          <p class="site-author-name" itemprop="name">Andrew Song</p>
+           
+              <p class="site-description motion-element" itemprop="description">只要开始,就不晚!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.cnblogs.com/" title="CNBLOG" target="_blank">CNBLOG</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Web框架"><span class="nav-number">1.</span> <span class="nav-text">Spring Web框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建WEB工程"><span class="nav-number">2.</span> <span class="nav-text">新建WEB工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sping通用配置"><span class="nav-number">3.</span> <span class="nav-text">Sping通用配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WEB-XML配置"><span class="nav-number">3.1.</span> <span class="nav-text">WEB.XML配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#web-xml初始化配置"><span class="nav-number">3.1.1.</span> <span class="nav-text">web.xml初始化配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指定Web应用上下文实现"><span class="nav-number">3.1.2.</span> <span class="nav-text">指定Web应用上下文实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指定Spring配置文件"><span class="nav-number">3.1.3.</span> <span class="nav-text">指定Spring配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加载和关闭Spring-Web容器"><span class="nav-number">3.1.4.</span> <span class="nav-text">加载和关闭Spring Web容器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在Web环境中获取Spring-Web容器"><span class="nav-number">3.1.5.</span> <span class="nav-text">在Web环境中获取Spring Web容器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试"><span class="nav-number">3.1.5.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集成SpingMVC"><span class="nav-number">4.</span> <span class="nav-text">集成SpingMVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WEB-XML配置-1"><span class="nav-number">4.1.</span> <span class="nav-text">WEB.XML配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatcher-servlet-xml配置"><span class="nav-number">4.2.</span> <span class="nav-text">dispatcher_servlet.xml配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Controller代码"><span class="nav-number">4.3.</span> <span class="nav-text">Controller代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动tomcat-访问controller"><span class="nav-number">4.4.</span> <span class="nav-text">启动tomcat,访问controller</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常总结"><span class="nav-number">5.</span> <span class="nav-text">异常总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andrew Song</span>
+</div>
+
+<!-- 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+ -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "a65e94b0556544308ae1a6ec892f9609",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
