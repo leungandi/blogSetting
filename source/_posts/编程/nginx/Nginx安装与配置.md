@@ -138,7 +138,7 @@ root      48402  0.0  0.0 103268   884 pts/0    S+   11:58   0:00 grep nginx
 
 ### 简单配置Ngnix
 
-配置nginx.conf
+#### 配置nginx.conf
 
 ```
 #================================以下是全局配置项
@@ -167,10 +167,10 @@ http {
 #================================以下是Nginx后端服务配置项
     upstream my_server{
         #nginx向后端服务器分配请求任务的方式，默认为轮询；如果指定了ip_hash，就是hash算法（上文介绍的算法内容）
-        ip_hash;    
+        #ip_hash;    
         #后端服务器 ip:port ，如果有多个服务节点，这里就配置多个
-        server 192.168.1.23:8082; 
-        #server 192.168.1.23:8080;    
+        server 192.168.1.21:8082; 
+        server 192.168.1.23:8082;     
         #backup表示，这个是一个备份节点，只有当所有节点失效后，nginx才会往这个节点分配请求任务
         #server 192.168.220.133:8080 backup;        
         #weight，固定权重，还记得我们上文提到的加权轮询方式吧。
@@ -314,6 +314,101 @@ http {
 ```
 
 配置[参考这里](http://blog.csdn.net/yinwenjie/article/details/46620711),感谢！！！
+
+
+#### 测试一下
+
+- 增加hosts
+
+打开`C:\Windows\System32\drivers\etc\hosts`文件，添加一下内容
+
+```
+	192.168.1.23 nginx.test.com nginx.test1.com
+	
+```
+
+- 访问一下
+
+打开浏览器，访问nginx.test.com，我们的nginx默认采用轮询的策略,每刷新一次,可以看到访问了不同的服务器，sessionId也随之变化.
+
+![image](/images/nginx/server1.jpg)
+
+---
+
+![image](/images/nginx/server2.jpg)
+
+### session共享
+
+session存在memcache或者redis中，以这种方式来同步session，把session抽取出来，放到内存级数据库里面，解决了session共享问题，同时读取速度也是非常之快。
+
+#### 安装redis
+
+我们在192.168.1.23的服务器上安装了redis了，安装过程省略,查看redis进程
+
+```
+[root@localhost utils]# ps -aux | grep redis
+Warning: bad syntax, perhaps a bogus '-'? See /usr/share/doc/procps-3.2.8/FAQ
+root       1316  0.1  0.0 130048   504 ?        Ssl  09:24   0:07 /usr/local/bin/redis-server 0.0.0.0:6379        
+root       1604  0.0  0.0 103272   892 pts/0    S+   10:49   0:00 grep redis
+[root@localhost utils]# 
+
+```
+#### 加入第三方jar
+
+在tomcat安装目录,我这里是`/opt/soft/apache-tomcat-7.0.81/lib`，添加以下3个所需的依赖jar包
+
+**目前仅支持tomcat-redis-session-manage-tomcat7.jar仅支持tomcat7.0**
+
+tomcat-redis-session-manage开源项目[参考这里](https://github.com/jcoleman/tomcat-redis-session-manager)
+
+![image](/images/nginx/lib.jpg)
+
+#### 修改context.xml配置文件
+
+修改context.xml配置文件,添加以下内容
+
+```
+ <Valve className="com.orangefunction.tomcat.redissessions.RedisSessionHandlerValve" />  
+    <Manager className="com.orangefunction.tomcat.redissessions.RedisSessionManager"  
+         host="192.168.1.23"  
+         port="6379"  
+         database="0"  
+         maxInactiveInterval="60" />  
+
+```
+
+#### 测试一下
+
+启动redis服务，重新启动所有tomcat，启动nginx，刷新nginx页面,两台tomcat页面可以看到sessionid值不变。
+
+![image](/images/nginx/server11.jpg)
+
+--- 
+
+![image](/images/nginx/server22.jpg)
+
+---
+
+查看redis中，的确存在该sessionId。
+
+![image](/images/nginx/redissession.jpg)
+
+```
+[root@localhost bin]# ./redis-cli 
+127.0.0.1:6379> keys *
+1) "a11"
+2) "redis"
+3) "redis1"
+4) "77CEF56A6114DB7D7E22768FBB5ED24B"
+5) "user"
+127.0.0.1:6379> 
+
+```
+
+
+
+
+
 
 
 
