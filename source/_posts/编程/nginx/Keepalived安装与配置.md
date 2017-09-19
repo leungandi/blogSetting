@@ -282,10 +282,9 @@ virtual_server 10.10.10.3 1358 {
     }
 }
 
+```
 
 ###### 配置Backup 
-
-```
 
 - backup上的原始IP信息
 
