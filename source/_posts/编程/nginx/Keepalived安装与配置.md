@@ -132,6 +132,14 @@ global_defs {
    vrrp_garp_interval 0
    vrrp_gna_interval 0
 }
+
+#检查nginx状态
+vrrp_script chknginx {
+  script "/etc/keepalived/checkNginx.sh"
+    #每5秒钟，检查一次
+    interval 5
+}
+
 #keepalived实例设置，是最重要的设置信息
 vrrp_instance VI_1 {
     #state状态MASTER表示是主要工作节点，备机为BACKUP。
@@ -157,6 +165,11 @@ vrrp_instance VI_1 {
     virtual_ipaddress {
         192.168.1.222 dev eth0
     }
+    #设置的检查脚本
+    #关联上方的“vrrp_script chknginx”
+    track_script {
+        chknginx
+    } 
 }
 
 virtual_server 192.168.200.100 443 {
@@ -659,6 +672,22 @@ Sep  6 09:42:37 localhost Keepalived_vrrp[7026]: VRRP_Instance(VI_1) removing pr
 Sep  6 09:42:37 localhost Keepalived_healthcheckers[7025]: Netlink reflector reports IP 192.168.1.234 removed
 
 ```
+
+#### 检测nginx状态脚本
+
+```
+#!/bin/sh
+if [ $(ps -C nginx | wc -l) -eq 1 ];then
+  service keepalived stop
+fi
+
+```
+
+- 注意字符集问题，否则脚本不能执行
+- 注意脚本权限问题，否则脚本不能运行
+
+
+
 
 
 
