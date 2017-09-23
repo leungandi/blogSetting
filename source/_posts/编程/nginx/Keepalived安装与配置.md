@@ -673,6 +673,7 @@ Sep  6 09:42:37 localhost Keepalived_healthcheckers[7025]: Netlink reflector rep
 
 ```
 
+
 #### 检测nginx状态脚本
 
 ```
