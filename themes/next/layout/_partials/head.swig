@@ -115,6 +115,16 @@
     }
   };
 </script>
+<script>
+    (function(){
+        if('{{ page.password }}'){
+            if (prompt('这是私人日志,请输入文章密码') !== '{{ page.password }}'){
+                alert('亲,密码错误,请联系作者!');
+                history.back();
+            }
+        }
+    })();
+</script>
 
 {# Canonical, good for google search engine (SEO) : https://support.google.com/webmasters/answer/139066 #}
 {% if theme.canonical %}
