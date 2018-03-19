@@ -1,6 +1,6 @@
 ---
-title: RabbitMQ入门
-date: 2018-02-27 13:50:14
+title: RabbitMQ安装及简单使用
+date: 2018-03-13 13:50:14
 tags:
 categories: 编程
 ---
@@ -189,27 +189,312 @@ rabbitmqctl list_users
 rabbitmq-plugins enable rabbitmq_management
 
 ```
+##### rabbitmq管理界面
+![image](http://p5in4o880.bkt.clouddn.com//loveyy/image/mq/admin_index.png)
 
 ## Java使用rabbitmq
 
+### MAVEN依赖
+
+```
+<dependency>
+    <groupId>com.rabbitmq</groupId>
+    <artifactId>amqp-client</artifactId>
+    <version>5.1.2</version>
+</dependency>
+
+```
+### 消息生产者代码
+
+```
+public class DirectProducer {
+
+    public static final String QUEUE_NAME = "com.szl.direct.que";
+    public static final String DIRECT_EXCHANGE_NAME = "com.szl.direct.exchange";
+    public static final String ROUTING_KEY = "com.szl.direct.que.routing";
+
+    public static void main(String[] args){
+
+        // 创建连接工厂
+        ConnectionFactory factory = RabbitMqBase.getConnectionFactoryInstance();
+        Connection connection = null;
+        Channel channel = null;
+
+        // 设置rabbitmq
+        factory.setHost("192.168.56.128");
+        factory.setPort(5672);
+        factory.setVirtualHost("/");
+        factory.setUsername("admin");
+        factory.setPassword("admin");
+        try {
+            // 创建一个连接
+            connection= RabbitMqBase.getConnection(factory);
+
+            // 创建一个通道
+            channel = RabbitMqBase.getChannel(connection);
+
+            // 声明一个交换机,这里使用DIRECT
+            channel.exchangeDeclare(DIRECT_EXCHANGE_NAME, BuiltinExchangeType.DIRECT,true);
+
+            // 声明一个队列
+            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+
+            // 队列绑定到交换机
+            channel.queueBind(QUEUE_NAME,DIRECT_EXCHANGE_NAME,ROUTING_KEY);
+
+            // 发送消息到队列
+            System.out.println("-----写入消息队列开始------");
+            for (int i = 1; i < 11; i++) {
+                String message = "Hello rabbitmq(" + i + ")";
+                channel.basicPublish(DIRECT_EXCHANGE_NAME,ROUTING_KEY,null,message.getBytes());
+            }
+            System.out.println("-----写入消息队列完成------");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                RabbitMqBase.close(connection,channel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+}
 
 
+```
+
+### 运行消息提供者
+
+运行消息提供者,我们可以在MQ管理控制台看到刚刚写入的对列消息
+
+![image](http://p5in4o880.bkt.clouddn.com//loveyy/image/mq/mq_p.png)
+
+
+### 消息消费者
+
+```
+public class DirectCustomer extends CustomerBase {
+
+    public static void main(String[] args){
+        // 创建连接工厂
+        ConnectionFactory factory = RabbitMqBase.getConnectionFactoryInstance();
+
+        // 设置rabbitmq
+        factory.setHost("192.168.56.128");
+        factory.setPort(5672);
+
+        // 创建一个连接
+        Connection connection = null;
+        try {
+            connection = RabbitMqBase.getConnection(factory);
+
+            // 创建一个通道
+            Channel channel = RabbitMqBase.getChannel(connection);
+
+            // 声明一个交换机,这里使用DIRECT
+            channel.exchangeDeclare(DirectProducer.DIRECT_EXCHANGE_NAME, BuiltinExchangeType.DIRECT,true);
+
+            // 声明一个队列
+            channel.queueDeclare(DirectProducer.QUEUE_NAME, true, false, false, null);
+            // 监听一个通道
+            Consumer consumer = defaultConsumer(channel);
+
+            // 自动回复队列应答 -- RabbitMQ中的消息确认机制
+            channel.basicConsume(DirectProducer.QUEUE_NAME, true, consumer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+
+### 运行消息消费者
+
+运行消息消费者,我们可以在MQ管理控制台看到已经有了消费者,且在控制台输出了接收到的消息内容
+
+- 控制台
+
+![image](http://p5in4o880.bkt.clouddn.com//loveyy/image/mq/mq_c.png)
+
+- 接收到的消息内容
+
+![image](http://p5in4o880.bkt.clouddn.com//loveyy/image/mq/mq_c_idea.png)
+
+
+++注意:以上代码使用的DIRECT模式,完整代码下载请[点我](https://github.com/leungandi/rabbitmq-demo)++
 
 ## spring整合rabbitmq
 
+### MAVEN依赖
+
+```
+<!--rabbitmq依赖-->
+<dependency>
+    <groupId>org.springframework.amqp</groupId>
+    <artifactId>spring-rabbit</artifactId>
+    <version>2.0.2.RELEASE</version>
+</dependency>
+
+```
+
+### rabbit.xml配置
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!--RabbitMQ 服务器-->
+    <rabbit:connection-factory id="connectionFactory" addresses="192.168.56.128:5672"
+                               username="admin" password="admin" virtual-host="/"/>
+
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <!--生产者-->
+    <!--定义queue -->
+    <rabbit:queue name="com.szl.direct.que" durable="true" auto-delete="false" exclusive="false"  />
+
+    <!--定义exchange -->
+    <rabbit:direct-exchange name="com.szl.direct.exchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="com.szl.direct.que" key="com.szl.direct.que.routing"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!--声明一个 RabbitMQ Template-->
+    <rabbit:template id="amqpTemplate"  connection-factory="connectionFactory" exchange="com.szl.direct.exchange" queue="com.szl.direct.que" routing-key="com.szl.direct.que.routing"/>
+
+    <!--数据装换类-->
+    <bean id="jackson2JsonMessageConverter"
+          class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter"/>
 
 
 
+    <!-- 消费者 -->
+    <bean name="mqCustomer" class="com.szl.rabbit.customer.MqCustomer"/>
+    <!-- 配置监听 -->
+    <rabbit:listener-container connection-factory="connectionFactory" message-converter="jackson2JsonMessageConverter">
+        <rabbit:listener ref="mqCustomer" queue-names="com.szl.direct.que" method="onMessage"/>
+    </rabbit:listener-container>
+</beans>
+
+```
+
+### aplicationContext.xml配置
+
+```
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util-3.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/rabbit
+     http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <import resource="classpath*:rabbitmq.xml"/>
 
 
+    <context:component-scan base-package="com.szl"/>
+
+    <context:annotation-config/>
 
 
+</beans>
+
+```
+
+### 消息生产者
+
+```
+@Service("mqProvider")
+public class MqProvider {
+
+    @Resource(name="amqpTemplate")
+    private AmqpTemplate amqpTemplate;
 
 
+    public void sendMsg() throws UnsupportedEncodingException {
+        System.out.println("spring:开始写入消息队列");
+        for (int i = 0; i < 10 ; i++) {
+            String msg = "Hello Spring-RabbitMq("+i+")";
+            Message message = MessageBuilder.withBody(msg.getBytes("utf-8"))
+                    .setMessageId(System.currentTimeMillis() + "")
+                    .build();
+            amqpTemplate.send(message);
+        }
+        System.out.println("spring:写入消息队列完成");
+    }
+
+}
+
+```
+
+### 消息消费者
+
+```
+public class MqCustomer implements MessageListener{
 
 
+    public void onMessage(Message message) {
+        System.out.println(new String(message.getBody()));
+    }
+}
 
 
+```
+
+### test
+
+```
+public class RabbitMqTest {
+
+    private ApplicationContext applicationContext = null;
+
+    @Before
+    public void init(){
+        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+    }
+
+    @Test
+    public void mqTest() throws InterruptedException, UnsupportedEncodingException {
+        MqProvider mqProvider = (MqProvider) applicationContext.getBean("mqProvider");
+        mqProvider.sendMsg();
+
+        // 暂停一下,让消费者去处理
+        Thread.sleep(6000);
+    }
+}
 
 
+```
 
+### 测试结果
+
+![image](http://p5in4o880.bkt.clouddn.com//loveyy/image/mq/mq_t.png)
